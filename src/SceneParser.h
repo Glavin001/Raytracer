@@ -17,16 +17,16 @@
 #include "Transform.h"
 
 /*
-class Camera;
-class Light;
-class Material;
-class Object3D;
-class Group;
-class Sphere;
-class Plane;
-class Triangle;
-class Transform;
-*/
+   class Camera;
+   class Light;
+   class Material;
+   class Object3D;
+   class Group;
+   class Sphere;
+   class Plane;
+   class Triangle;
+   class Transform;
+ */
 #define MAX_PARSER_TOKEN_LENGTH 100
 
 class SceneParser
@@ -50,12 +50,12 @@ public:
     {
         return ambient_light;
     }
-    
+
     int getNumLights() const
     {
         return num_lights;
     }
-    
+
     Light* getLight( int i ) const
     {
         assert( i >= 0 && i < num_lights );
@@ -90,7 +90,7 @@ private:
     void parseBackground();
     void parseLights();
     Light* parseDirectionalLight();
-	Light* parsePointLight();
+    Light* parsePointLight();
     void parseMaterials();
     Material* parseMaterial();
 

@@ -3,8 +3,8 @@
 void
 Texture::load(const char * filename)
 {
-	bimg=new bitmap_image(filename);
-	height = bimg->height();
+    bimg=new bitmap_image(filename);
+    height = bimg->height();
     width = bimg->width();
 }
 
@@ -17,13 +17,13 @@ Texture::operator()(int x, int y,  unsigned char * color)
 }
 bool Texture::valid()
 {
-	return bimg!=0;
+    return bimg!=0;
 }
 ///@param x assumed to be between 0 and 1
 Vector3f
 Texture::operator()(float x, float y)
 {
-	Vector3f color;
+    Vector3f color;
     int ix,iy;
     x=x*width;
     y=(1-y)*height;
@@ -32,27 +32,27 @@ Texture::operator()(float x, float y)
     unsigned char pixels[4][3];
     float alpha = x-ix;
     float beta = y-iy;
-    operator()(ix  ,iy  ,pixels[0]);
-    operator()(ix+1,iy  ,pixels[1]);
-    operator()(ix  ,iy+1,pixels[2]);
+    operator()(ix,iy,pixels[0]);
+    operator()(ix+1,iy,pixels[1]);
+    operator()(ix,iy+1,pixels[2]);
     operator()(ix+1,iy+1,pixels[3]);
-    for(int ii=0;ii<3;ii++){
-      color[ii] = (1-alpha)*(1-beta)*pixels[0][ii]
-                +    alpha *(1-beta)*pixels[1][ii]
-                + (1-alpha)*   beta *pixels[2][ii]
-                +    alpha *   beta *pixels[3][ii];
+    for(int ii=0; ii<3; ii++) {
+        color[ii] = (1-alpha)*(1-beta)*pixels[0][ii]
+                    +    alpha *(1-beta)*pixels[1][ii]
+                    + (1-alpha)*   beta *pixels[2][ii]
+                    +    alpha *   beta *pixels[3][ii];
     }
-	return color/255;
+    return color/255;
 }
 
 Texture::~Texture()
 {
-	if(bimg!=0){
-		delete bimg;
-	}
+    if(bimg!=0) {
+        delete bimg;
+    }
 }
 
-Texture::Texture():bimg(0),width(0),height(0)
+Texture::Texture() : bimg(0),width(0),height(0)
 {
 }
 

@@ -5,12 +5,12 @@
 #include <cmath>
 
 #include "SceneParser.h"
-#include "Camera.h" 
+#include "Camera.h"
 #include "Light.h"
 #include "Material.h"
 
 #include "Object3D.h"
-#include "Group.h" 
+#include "Group.h"
 #include "Sphere.h"
 #include "Plane.h"
 #include "Triangle.h"
@@ -35,18 +35,18 @@ SceneParser::SceneParser(const char* filename) {
     assert(filename != NULL);
     const char *ext = &filename[strlen(filename)-4];
 
-    if(strcmp(ext,".txt")!=0){
-		printf("wrong file name extension\n");
-		exit(0);
-	}
+    if(strcmp(ext,".txt")!=0) {
+        printf("wrong file name extension\n");
+        exit(0);
+    }
     file = fopen(filename,"r");
 
-	if (file == NULL){
-		printf("cannot open scene file\n");
-		exit(0);
-	}
+    if (file == NULL) {
+        printf("cannot open scene file\n");
+        exit(0);
+    }
     parseFile();
-    fclose(file); 
+    fclose(file);
     file = NULL;
 
     // if no lights are specified, set ambient light to white
@@ -58,16 +58,18 @@ SceneParser::SceneParser(const char* filename) {
 }
 
 SceneParser::~SceneParser() {
-    if (group != NULL) 
+    if (group != NULL)
         delete group;
-    if (camera != NULL) 
+    if (camera != NULL)
         delete camera;
     int i;
     for (i = 0; i < num_materials; i++) {
-        delete materials[i]; }
+        delete materials[i];
+    }
     delete [] materials;
     for (i = 0; i < num_lights; i++) {
-        delete lights[i]; }
+        delete lights[i];
+    }
     delete [] lights;
 }
 
@@ -76,12 +78,12 @@ SceneParser::~SceneParser() {
 
 void SceneParser::parseFile() {
     //
-    // at the top level, the scene can have a camera, 
+    // at the top level, the scene can have a camera,
     // background color and a group of objects
     // (we add lights and other things in future assignments)
     //
-    char token[MAX_PARSER_TOKEN_LENGTH];        
-    while (getToken(token)) { 
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    while (getToken(token)) {
         if (!strcmp(token, "PerspectiveCamera")) {
             parsePerspectiveCamera();
         } else if (!strcmp(token, "Background")) {
@@ -122,11 +124,11 @@ void SceneParser::parsePerspectiveCamera() {
 void SceneParser::parseBackground() {
     char token[MAX_PARSER_TOKEN_LENGTH];
     // read in the background color
-    getToken(token); assert (!strcmp(token, "{"));    
+    getToken(token); assert (!strcmp(token, "{"));
     while (1) {
-        getToken(token); 
-        if (!strcmp(token, "}")) { 
-            break;    
+        getToken(token);
+        if (!strcmp(token, "}")) {
+            break;
         } else if (!strcmp(token, "color")) {
             background_color = readVector3f();
         } else if (!strcmp(token, "ambientLight")) {
@@ -151,17 +153,17 @@ void SceneParser::parseLights() {
     // read in the objects
     int count = 0;
     while (num_lights > count) {
-        getToken(token); 
+        getToken(token);
         if (!strcmp(token, "DirectionalLight")) {
             lights[count] = parseDirectionalLight();
         } else if(strcmp(token, "PointLight")==0)
-		{
-			lights[count] = parsePointLight();
-		}
-		else {
-            printf ("Unknown token in parseLight: '%s'\n", token); 
-            exit(0);    
-        }     
+        {
+            lights[count] = parsePointLight();
+        }
+        else {
+            printf ("Unknown token in parseLight: '%s'\n", token);
+            exit(0);
+        }
         count++;
     }
     getToken(token); assert (!strcmp(token, "}"));
@@ -201,50 +203,50 @@ void SceneParser::parseMaterials() {
     // read in the objects
     int count = 0;
     while (num_materials > count) {
-        getToken(token); 
+        getToken(token);
         if (!strcmp(token, "Material") ||
-                !strcmp(token, "PhongMaterial")) {
+            !strcmp(token, "PhongMaterial")) {
             materials[count] = parseMaterial();
         } else {
-            printf ("Unknown token in parseMaterial: '%s'\n", token); 
+            printf ("Unknown token in parseMaterial: '%s'\n", token);
             exit(0);
         }
         count++;
     }
     getToken(token); assert (!strcmp(token, "}"));
-}    
+}
 
 
 Material* SceneParser::parseMaterial() {
     char token[MAX_PARSER_TOKEN_LENGTH];
-	char filename[MAX_PARSER_TOKEN_LENGTH];
-	filename[0] = 0;
+    char filename[MAX_PARSER_TOKEN_LENGTH];
+    filename[0] = 0;
     Vector3f diffuseColor(1,1,1), specularColor(0,0,0);
-	float shininess=0;
+    float shininess=0;
     getToken(token); assert (!strcmp(token, "{"));
     while (1) {
-        getToken(token); 
+        getToken(token);
         if (strcmp(token, "diffuseColor")==0) {
             diffuseColor = readVector3f();
         }
-		else if (strcmp(token, "specularColor")==0) {
+        else if (strcmp(token, "specularColor")==0) {
             specularColor = readVector3f();
         }
-		else if (strcmp(token, "shininess")==0) {
+        else if (strcmp(token, "shininess")==0) {
             shininess = readFloat();
         }
-		else if (strcmp(token, "texture")==0) {
+        else if (strcmp(token, "texture")==0) {
             getToken(filename);
         }
-		else {
+        else {
             assert (!strcmp(token, "}"));
             break;
         }
     }
     Material *answer = new Material(diffuseColor, specularColor, shininess);
-	if(filename[0] !=0){
-		answer->loadTexture(filename);
-	}
+    if(filename[0] !=0) {
+        answer->loadTexture(filename);
+    }
     return answer;
 }
 
@@ -253,17 +255,17 @@ Material* SceneParser::parseMaterial() {
 
 Object3D* SceneParser::parseObject(char token[MAX_PARSER_TOKEN_LENGTH]) {
     Object3D *answer = NULL;
-    if (!strcmp(token, "Group")) {            
+    if (!strcmp(token, "Group")) {
         answer = (Object3D*)parseGroup();
-    } else if (!strcmp(token, "Sphere")) {            
+    } else if (!strcmp(token, "Sphere")) {
         answer = (Object3D*)parseSphere();
-    } else if (!strcmp(token, "Plane")) {            
+    } else if (!strcmp(token, "Plane")) {
         answer = (Object3D*)parsePlane();
-    } else if (!strcmp(token, "Triangle")) {            
+    } else if (!strcmp(token, "Triangle")) {
         answer = (Object3D*)parseTriangle();
-    } else if (!strcmp(token, "TriangleMesh")) {            
+    } else if (!strcmp(token, "TriangleMesh")) {
         answer = (Object3D*)parseTriangleMesh();
-    } else if (!strcmp(token, "Transform")) {            
+    } else if (!strcmp(token, "Transform")) {
         answer = (Object3D*)parseTransform();
     } else {
         printf ("Unknown token in parseObject: '%s'\n", token);
@@ -296,7 +298,7 @@ Group* SceneParser::parseGroup() {
     // read in the objects
     int count = 0;
     while (num_objects > count) {
-        getToken(token); 
+        getToken(token);
         if (!strcmp(token, "MaterialIndex")) {
             // change the current material
             int index = readInt();
@@ -306,12 +308,12 @@ Group* SceneParser::parseGroup() {
             Object3D *object = parseObject(token);
             assert (object != NULL);
             answer->addObject(count,object);
-	    
+
             count++;
         }
     }
     getToken(token); assert (!strcmp(token, "}"));
-    
+
     // return the group
     return answer;
 }
@@ -348,13 +350,13 @@ Plane* SceneParser::parsePlane() {
 Triangle* SceneParser::parseTriangle() {
     char token[MAX_PARSER_TOKEN_LENGTH];
     getToken(token); assert (!strcmp(token, "{"));
-    getToken(token); 
+    getToken(token);
     assert (!strcmp(token, "vertex0"));
     Vector3f v0 = readVector3f();
-    getToken(token); 
+    getToken(token);
     assert (!strcmp(token, "vertex1"));
     Vector3f v1 = readVector3f();
-    getToken(token); 
+    getToken(token);
     assert (!strcmp(token, "vertex2"));
     Vector3f v2 = readVector3f();
     getToken(token); assert (!strcmp(token, "}"));
@@ -368,12 +370,12 @@ Mesh* SceneParser::parseTriangleMesh() {
     // get the filename
     getToken(token); assert (!strcmp(token, "{"));
     getToken(token); assert (!strcmp(token, "obj_file"));
-    getToken(filename); 
+    getToken(filename);
     getToken(token); assert (!strcmp(token, "}"));
     const char *ext = &filename[strlen(filename)-4];
     assert(!strcmp(ext,".obj"));
     Mesh *answer = new Mesh(filename,current_material);
-    
+
     return answer;
 }
 
@@ -383,7 +385,7 @@ Transform* SceneParser::parseTransform() {
     Matrix4f matrix = Matrix4f::identity();
     Object3D *object = NULL;
     getToken(token); assert (!strcmp(token, "{"));
-    // read in transformations: 
+    // read in transformations:
     // apply to the LEFT side of the current matrix (so the first
     // transform in the list is the last applied to the object)
     getToken(token);
@@ -414,10 +416,10 @@ Transform* SceneParser::parseTransform() {
             Matrix4f matrix2 = Matrix4f::identity();
             getToken(token); assert (!strcmp(token, "{"));
             for (int j = 0; j < 4; j++) {
-	            for (int i = 0; i < 4; i++) {
-            	    float v = readFloat();
-	                matrix2( i, j ) = v; 
-            	} 
+                for (int i = 0; i < 4; i++) {
+                    float v = readFloat();
+                    matrix2( i, j ) = v;
+                }
             }
             getToken(token); assert (!strcmp(token, "}"));
             matrix = matrix2 * matrix;

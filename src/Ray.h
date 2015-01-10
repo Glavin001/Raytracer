@@ -14,12 +14,12 @@ public:
 
     Ray( const Vector3f& orig, const Vector3f& dir )
     {
-        origin = orig; 
+        origin = orig;
         direction = dir;
     }
 
     Ray( const Ray& r )
-    { 
+    {
         origin = r.origin;
         direction = r.direction;
     }
@@ -33,7 +33,7 @@ public:
     {
         return direction;
     }
-    
+
     Vector3f pointAtParameter( float t ) const
     {
         return origin + direction * t;

@@ -23,12 +23,12 @@ void WriteByte( FILE* file, unsigned char b )
 unsigned char ClampColorComponent( float c )
 {
     int tmp = int( c * 255 );
-    
+
     if( tmp < 0 )
     {
         tmp = 0;
     }
-    
+
     if( tmp > 255 )
     {
         tmp = 255;
@@ -114,7 +114,7 @@ Image* Image::LoadTGA(const char *filename) {
     return answer;
 }
 
-// Save and Load PPM image files using magic number 'P6' 
+// Save and Load PPM image files using magic number 'P6'
 // and having one comment line
 
 void Image::SavePPM(const char *filename) const {
@@ -150,15 +150,15 @@ Image* Image::LoadPPM(const char *filename) {
     FILE *file = fopen(filename,"rb");
     // misc header information
     int width = 0;
-    int height = 0;  
+    int height = 0;
     char tmp[100];
-    fgets(tmp,100,file); 
+    fgets(tmp,100,file);
     assert (strstr(tmp,"P6"));
-    fgets(tmp,100,file); 
+    fgets(tmp,100,file);
     assert (tmp[0] == '#');
-    fgets(tmp,100,file); 
+    fgets(tmp,100,file);
     sscanf(tmp,"%d %d",&width,&height);
-    fgets(tmp,100,file); 
+    fgets(tmp,100,file);
     assert (strstr(tmp,"255"));
     // the data
     Image *answer = new Image(width,height);
@@ -202,7 +202,7 @@ Image* Image::compare(Image* img1, Image* img2) {
 }
 /****************************************************************************
     bmp.c - read and write bmp images.
-    Distributed with Xplanet.  
+    Distributed with Xplanet.
     Copyright (C) 2002 Hari Nair <hari@alumni.caltech.edu>
 
     This program is free software; you can redistribute it and/or modify
@@ -234,18 +234,18 @@ struct BMPHeader
     int biSizeImage;      /* Image size, in bytes (0 if no compression) */
     int biXPelsPerMeter;  /* Resolution in pixels/meter of display device */
     int biYPelsPerMeter;  /* Resolution in pixels/meter of display device */
-    int biClrUsed;        /* Number of colors in the color table (if 0, use 
+    int biClrUsed;        /* Number of colors in the color table (if 0, use
                              maximum allowed by biBitCount) */
-    int biClrImportant;   /* Number of important colors.  If 0, all colors 
+    int biClrImportant;   /* Number of important colors.  If 0, all colors
                              are important */
 };
-int 
+int
 Image::SaveBMP(const char *filename)
 {
     int i, j, ipos;
     int bytesPerLine;
     unsigned char *line;
-	Vector3f*rgb = data;
+    Vector3f*rgb = data;
     FILE *file;
     struct BMPHeader bmph;
 
@@ -266,12 +266,12 @@ Image::SaveBMP(const char *filename)
     bmph.biSizeImage = bytesPerLine * height;
     bmph.biXPelsPerMeter = 0;
     bmph.biYPelsPerMeter = 0;
-    bmph.biClrUsed = 0;       
-    bmph.biClrImportant = 0; 
+    bmph.biClrUsed = 0;
+    bmph.biClrImportant = 0;
 
     file = fopen (filename, "wb");
     if (file == NULL) return(0);
-  
+
     fwrite(&bmph.bfType, 2, 1, file);
     fwrite(&bmph.bfSize, 4, 1, file);
     fwrite(&bmph.bfReserved, 4, 1, file);
@@ -287,7 +287,7 @@ Image::SaveBMP(const char *filename)
     fwrite(&bmph.biYPelsPerMeter, 4, 1, file);
     fwrite(&bmph.biClrUsed, 4, 1, file);
     fwrite(&bmph.biClrImportant, 4, 1, file);
-  
+
     line = (unsigned char *)malloc(bytesPerLine);
     if (line == NULL)
     {
@@ -295,7 +295,7 @@ Image::SaveBMP(const char *filename)
         return(0);
     }
 
-    for (i = 0; i < height ; i++)
+    for (i = 0; i < height; i++)
     {
         for (j = 0; j < width; j++)
         {
@@ -315,10 +315,10 @@ Image::SaveBMP(const char *filename)
 
 void Image::SaveImage(const char * filename)
 {
-	int len = strlen(filename);
-	if(strcmp(".bmp", filename+len-4)==0){
-		SaveBMP(filename);
-	}else{
-		SaveTGA(filename);
-	}
+    int len = strlen(filename);
+    if(strcmp(".bmp", filename+len-4)==0) {
+        SaveBMP(filename);
+    }else{
+        SaveTGA(filename);
+    }
 }

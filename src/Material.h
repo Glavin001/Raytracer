@@ -12,39 +12,39 @@
 class Material
 {
 public:
-	
- Material( const Vector3f& d_color ,const Vector3f& s_color=Vector3f::ZERO, float s=0):
-  diffuseColor( d_color),specularColor(s_color), shininess(s)
-  {
-        	
-  }
 
-  virtual ~Material()
+    Material( const Vector3f& d_color,const Vector3f& s_color=Vector3f::ZERO, float s=0) :
+        diffuseColor( d_color),specularColor(s_color), shininess(s)
     {
 
     }
 
-  virtual Vector3f getDiffuseColor() const 
-  { 
-    return  diffuseColor;
-  }
-    
+    virtual ~Material()
+    {
 
-  Vector3f Shade( const Ray& ray, const Hit& hit,
-                  const Vector3f& dirToLight, const Vector3f& lightColor ) {
+    }
 
-    return Vector3f(1,1,1) ; 
-		
-  }
+    virtual Vector3f getDiffuseColor() const
+    {
+        return diffuseColor;
+    }
 
-  void loadTexture(const char * filename){
-    t.load(filename);
-  }
- protected:
-  Vector3f diffuseColor;
-  Vector3f specularColor;
-  float shininess;
-  Texture t;
+
+    Vector3f Shade( const Ray& ray, const Hit& hit,
+                    const Vector3f& dirToLight, const Vector3f& lightColor ) {
+
+        return Vector3f(1,1,1);
+
+    }
+
+    void loadTexture(const char * filename){
+        t.load(filename);
+    }
+protected:
+    Vector3f diffuseColor;
+    Vector3f specularColor;
+    float shininess;
+    Texture t;
 };
 
 
