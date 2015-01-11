@@ -12,12 +12,17 @@ using namespace std;
 class Sphere : public Object3D
 {
 public:
+
+    Vector3f center;
+    float radius;
+
     Sphere(){
         //unit ball at the center
     }
 
     Sphere( Vector3f center, float radius, Material* material ) : Object3D(material){
-
+        this->center = center;
+        this->radius = radius;
     }
 
 
@@ -26,6 +31,7 @@ public:
 
     virtual bool intersect( const Ray& r, Hit& h, float tmin){
 
+        return true;
     }
 
 protected:

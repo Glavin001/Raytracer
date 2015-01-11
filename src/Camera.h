@@ -45,4 +45,35 @@ private:
 
 };
 
+
+///TODO: Implement Orthographic camera
+///Fill in functions and add more fields if necessary
+class OrthographicCamera : public Camera
+{
+public:
+    OrthographicCamera(const Vector3f& center, const Vector3f& direction,const Vector3f& up, int size){
+        this->center = center;
+        this->direction = direction;
+        this->up = up;
+        this->size = size;
+        this->horizontal = 0.0f; // FIXME
+    }
+
+    virtual Ray generateRay( const Vector2f& point) {
+        float x = point.x(); // center.x - (size*up)/2 - (size*horizontal)/2;
+        float y = point.y(); // center.x + (size*up)/2 + (size*horizontal)/2;
+        float z = 0.0f;
+        Vector3f origin = Vector3f(x,y,z);
+        return Ray::Ray(origin, this->direction);
+    }
+
+    virtual float getTMin() const {
+        return -INFINITY;
+    }
+
+private:
+    int size;
+
+};
+
 #endif //CAMERA_H
