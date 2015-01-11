@@ -16,33 +16,84 @@ using namespace std;
 float clampedDepth ( float depthInput, float depthMin, float depthMax);
 
 #include "bitmap_image.hpp"
+
+std::string parseArgString(std::string argName, std::map<std::string, int> argsMap, int argc, char* argv[])
+{
+
+    if ( argsMap.find(argName) == argsMap.end() ) {
+        // not found
+        std::cout << "Missing `" << argName << "` argument." << endl;
+        return "";
+    } else {
+        // found
+        int pos = argsMap.at(argName);
+        int strPos = pos+1;
+        if (strPos >= argc) {
+            // Out of bounds
+            std::cout << "Missing <value> of `" << argName << "` <value>` argument." << endl;
+            return "";
+        } else {
+            return argv[strPos];
+        }
+    }
+
+}
+
+
+std::pair<int, int> parseArgIntPair(std::string argName, std::map<std::string, int> argsMap, int argc, char* argv[])
+{
+
+    if ( argsMap.find(argName) == argsMap.end() ) {
+        // not found
+        std::cout << "Missing `" << argName << "` argument." << endl;
+        return (std::pair<int, int>(0,0));
+    } else {
+        // found
+        int pos = argsMap.at(argName);
+        int strPos = pos+1;
+        int strPos2 = pos+2;
+        if (strPos2 >= argc) {
+            // Out of bounds
+            std::cout << "Missing <value2> of `" << argName << "` <value1> <value2>` argument." << endl;
+            return (std::pair<int, int>(0,0));
+        } else {
+            char *valStr1 = argv[strPos];
+            char *valStr2 = argv[strPos2];
+            int val1 = atoi(valStr1);
+            int val2 = atoi(valStr2);
+            return (std::pair<int, int>(val1,val2));
+        }
+    }
+
+}
+
 int main( int argc, char* argv[] )
 {
     // Fill in your implementation here.
     std::string version = "v0.1.0";
 
     std::string help = "\n"
-                       "Raytracer version: " + version + "\n"
-                       "\n"
-                       "Usage: raytracer [options]\n"
-                       "\n"
-                       "Options:\n"
-                       "\t-help\t\toutput usage information\n"
-                       "\t-version\t\toutput the version number\n"
-                       "\t-input <file>\t\tinput file\n"
-                       "\t-output <file>\t\toutput file\n"
-                       "\t-size <width> <height>\t\tsize of rendered image\n"
-                       "\t-depth <num1> <num2> <file>\t\tdepth"
-                       "\n"
-                       "Examples:\n"
-                       "\traytracer -input scene1_01.txt -size 200 200 -output output1_01.tga -depth 9 10 depth1_01.tga\n"
-                       "\traytracer -input scene1_02.txt -size 200 200 -output output1_02.tga -depth 8 12 depth1_02.tga\n"
-                       "\traytracer -input scene1_03.txt -size 200 200 -output output1_03.tga -depth 8 12 depth1_03.tga\n"
-                       "\traytracer -input scene1_04.txt -size 200 200 -output output1_04.tga -depth 12 17 depth1_04.tga\n"
-                       "\traytracer -input scene1_05.txt -size 200 200 -output output1_05.tga -depth 14.5 19.5 depth1_05.tga\n"
-                       "\traytracer -input scene1_06.txt -size 200 200 -output output1_06.tga -depth 3 7 depth1_06.tga\n"
-                       "\traytracer -input scene1_07.txt -size 200 200 -output output1_07.tga -depth -2 2 depth1_07.tga\n"
-                       "\n";
+    "Raytracer version: " + version + "\n"
+    "\n"
+    "Usage: raytracer [options]\n"
+    "\n"
+    "Options:\n"
+    "\t-help\t\t\toutput usage information\n"
+    "\t-version\t\toutput the version number\n"
+    "\t-input <file>\t\tinput file\n"
+    "\t-output <file>\t\toutput file\n"
+    "\t-size <width> <height>\tsize of rendered image\n"
+    "\t-depth <depth_min> <depth_max> <depth_file>\tdepth\n"
+    "\n"
+    "Examples:\n"
+    "\traytracer -input scene1_01.txt -size 200 200 -output output1_01.tga -depth 9 10 depth1_01.tga\n"
+    "\traytracer -input scene1_02.txt -size 200 200 -output output1_02.tga -depth 8 12 depth1_02.tga\n"
+    "\traytracer -input scene1_03.txt -size 200 200 -output output1_03.tga -depth 8 12 depth1_03.tga\n"
+    "\traytracer -input scene1_04.txt -size 200 200 -output output1_04.tga -depth 12 17 depth1_04.tga\n"
+    "\traytracer -input scene1_05.txt -size 200 200 -output output1_05.tga -depth 14.5 19.5 depth1_05.tga\n"
+    "\traytracer -input scene1_06.txt -size 200 200 -output output1_06.tga -depth 3 7 depth1_06.tga\n"
+    "\traytracer -input scene1_07.txt -size 200 200 -output output1_07.tga -depth -2 2 depth1_07.tga\n"
+    "\n";
 
     // === Build map of options and their positions ===
     std::map<std::string, int> argsMap;
@@ -61,7 +112,7 @@ int main( int argc, char* argv[] )
     }
 
     // === Help ===
-    if ( argsMap.find("-help") != argsMap.end() ) {
+    if ( argsMap.find("-help") != argsMap.end() || argc == 1) {
         std::cout << help << endl;
         return 0;
     }
@@ -73,49 +124,32 @@ int main( int argc, char* argv[] )
     }
 
     // === Input ===
-    std::string inputFileName;
-    if ( argsMap.find("-input") == argsMap.end() ) {
-        // not found
-        std::cout << "Missing `-input` argument." << endl;
+    std::string inputFileName = parseArgString("-input", argsMap, argc, argv);
+    if (inputFileName.empty()) {
         return 1;
-    } else {
-        // found
-        int pos = argsMap.at("-input");
-        // std::cout << "input: " << pos << std::endl;
-        int filePos = pos+1;
-        if (filePos >= argc) {
-            // Out of bounds
-            std::cout << "Missing `-input <value>` argument value." << endl;
-            return 1;
-        } else {
-            inputFileName = argv[filePos];
-        }
     }
     std::cout << "Input file: " << inputFileName << endl;
 
     // === Output ===
-    std::string outputFileName;
-    if ( argsMap.find("-output") == argsMap.end() ) {
-        // not found
-        std::cout << "Missing `-output` argument." << endl;
+    std::string outputFileName = parseArgString("-output", argsMap, argc, argv);
+    if (outputFileName.empty()) {
         return 1;
-    } else {
-        // found
-        int pos = argsMap.at("-output");
-        // std::cout << "input: " << pos << std::endl;
-        int filePos = pos+1;
-        if (filePos >= argc) {
-            // Out of bounds
-            std::cout << "Missing `-output <value>` argument value." << endl;
-            return 1;
-        } else {
-            outputFileName = argv[filePos];
-        }
     }
     std::cout << "Output file: " << outputFileName << endl;
 
+    std::pair<int, int> size = parseArgIntPair("-size", argsMap, argc, argv);
+    int width = size.first;
+    int height = size.second;
+    if (width > 0 && height > 0) {
+        std::cout << "Size (width, height): (" << width << ", " << height << ")" << endl;
+    } else {
+        std::cout << "Please enter a valid image size (width > 0, height > 0)." << endl;
+        return 1;
+    }
 
     // First, parse the scene using SceneParser.
+    SceneParser::SceneParser(inputFileName.c_str());
+
     // Then loop over each pixel in the image, shooting a ray
     // through that pixel and finding its intersection with
     // the scene.  Write the color at the intersection to that
