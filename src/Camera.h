@@ -56,19 +56,32 @@ public:
         this->direction = direction;
         this->up = up;
         this->size = size;
-        this->horizontal = 0.0f; // FIXME
+
+        // find right/horizontal vector:
+        this->horizontal = Vector3f::cross(direction.normalized(), up.normalized());
+
     }
 
     virtual Ray generateRay( const Vector2f& point) {
-        float x = point.x(); // center.x - (size*up)/2 - (size*horizontal)/2;
-        float y = point.y(); // center.x + (size*up)/2 + (size*horizontal)/2;
-        float z = 0.0f;
-        Vector3f origin = Vector3f(x,y,z);
+        // Vector3f bl = center - (size*up)/2 - (size*horizontal)/2;
+        // Vector3f tr = center + (size*up)/2 + (size*horizontal)/2;
+        // float x
+        // float y
+        //
+        // float z = -INFINITY;
+        // Vector3f origin = Vector3f(x,y,z);
+        float size2 = size / 2;
+        Vector3f origin = center - ((point.y()-size2)*up)/2 - ((point.x()-size2)*horizontal)/2;
+
         return Ray::Ray(origin, this->direction);
     }
 
     virtual float getTMin() const {
         return -INFINITY;
+    }
+
+    int getSize() const {
+        return size;
     }
 
 private:

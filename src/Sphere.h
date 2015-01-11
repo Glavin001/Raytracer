@@ -31,7 +31,20 @@ public:
 
     virtual bool intersect( const Ray& r, Hit& h, float tmin){
 
+        // geometric solution
+        float radius2 = radius * radius;
+        Vector3f L = center - r.getOrigin();
+        float tca = Vector3f::dot(L, r.getDirection());
+        if (tca < 0) return false;
+        float d2 = Vector3f::dot(L, L) - tca * tca;
+        if (d2 > radius2) return false;
+        float thc = sqrt(radius2 - d2);
+        float t0 = tca - thc;
+        float t1 = tca + thc;
+        if (t0 > h.getT()) return false;
+        // else h.t = t0;
         return true;
+
     }
 
 protected:
