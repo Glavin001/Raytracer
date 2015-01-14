@@ -161,7 +161,7 @@ int main( int argc, char* argv[] )
     Image image( width, height );
     float tmin = camera->getTMin();
     // int csize = camera->getSize();
-    float ar = (float) 5.0f / 200.0f; // csize / width;
+    float ar = (float) 5.0f / 100.0f; // csize / width;
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++) {

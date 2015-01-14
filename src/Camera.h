@@ -70,18 +70,13 @@ public:
         //
         // float z = -INFINITY;
         // Vector3f origin = Vector3f(x,y,z);
-        float size2 = size / 2;
-        Vector3f origin = center - ((point.y()-size2)*up)/2 - ((point.x()-size2)*horizontal)/2;
+        Vector3f origin = center - ((size-point.y())*up)/2 - ((size-point.x())*horizontal)/2;
 
         return Ray::Ray(origin, this->direction);
     }
 
     virtual float getTMin() const {
         return -INFINITY;
-    }
-
-    int getSize() const {
-        return size;
     }
 
 private:
