@@ -56,22 +56,19 @@ public:
         this->direction = direction;
         this->up = up;
         this->size = size;
-
         // find right/horizontal vector:
         this->horizontal = Vector3f::cross(direction.normalized(), up.normalized());
-
     }
 
     virtual Ray generateRay( const Vector2f& point) {
-        // Vector3f bl = center - (size*up)/2 - (size*horizontal)/2;
-        // Vector3f tr = center + (size*up)/2 + (size*horizontal)/2;
-        // float x
-        // float y
-        //
-        // float z = -INFINITY;
-        // Vector3f origin = Vector3f(x,y,z);
-        Vector3f origin = center - ((size-point.y())*up)/2 - ((size-point.x())*horizontal)/2;
-
+        float hsize = size/2;
+        float left = -hsize;
+        float right = hsize;
+        float top = hsize;
+        float bottom = -hsize;
+        float u = left+(right-left)*point.x();
+        float v = bottom+(top-bottom)*point.y();
+        Vector3f origin = center + (v*up) + (u*horizontal);
         return Ray::Ray(origin, this->direction);
     }
 

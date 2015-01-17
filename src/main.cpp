@@ -160,13 +160,11 @@ int main( int argc, char* argv[] )
     // pixel in your output image.
     Image image( width, height );
     float tmin = camera->getTMin();
-    // int csize = camera->getSize();
-    float ar = (float) 5.0f / 100.0f; // csize / width;
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++) {
 
-            Vector2f point (x*ar, y*ar);
+            Vector2f point ( (x+0.5)/width, (y+0.5)/height );
             Ray ray = camera->generateRay(point);
             Hit hit = Hit();
             bool doesIntersect = group->intersect(ray, hit, tmin);
