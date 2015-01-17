@@ -16,56 +16,7 @@ using namespace std;
 float clampedDepth ( float depthInput, float depthMin, float depthMax);
 
 #include "bitmap_image.hpp"
-
-std::string parseArgString(std::string argName, std::map<std::string, int> argsMap, int argc, char* argv[])
-{
-
-    if ( argsMap.find(argName) == argsMap.end() ) {
-        // not found
-        std::cout << "Missing `" << argName << "` argument." << endl;
-        return "";
-    } else {
-        // found
-        int pos = argsMap.at(argName);
-        int strPos = pos+1;
-        if (strPos >= argc) {
-            // Out of bounds
-            std::cout << "Missing <value> of `" << argName << "` <value>` argument." << endl;
-            return "";
-        } else {
-            return argv[strPos];
-        }
-    }
-
-}
-
-
-std::pair<int, int> parseArgIntPair(std::string argName, std::map<std::string, int> argsMap, int argc, char* argv[])
-{
-
-    if ( argsMap.find(argName) == argsMap.end() ) {
-        // not found
-        std::cout << "Missing `" << argName << "` argument." << endl;
-        return (std::pair<int, int>(0,0));
-    } else {
-        // found
-        int pos = argsMap.at(argName);
-        int strPos = pos+1;
-        int strPos2 = pos+2;
-        if (strPos2 >= argc) {
-            // Out of bounds
-            std::cout << "Missing <value2> of `" << argName << "` <value1> <value2>` argument." << endl;
-            return (std::pair<int, int>(0,0));
-        } else {
-            char *valStr1 = argv[strPos];
-            char *valStr2 = argv[strPos2];
-            int val1 = atoi(valStr1);
-            int val2 = atoi(valStr2);
-            return (std::pair<int, int>(val1,val2));
-        }
-    }
-
-}
+#include "ArgParser.h"
 
 int main( int argc, char* argv[] )
 {
@@ -95,60 +46,10 @@ int main( int argc, char* argv[] )
                        "\traytracer -input scene1_07.txt -size 200 200 -output output1_07.tga -depth -2 2 depth1_07.tga\n"
                        "\n";
 
-    // === Build map of options and their positions ===
-    std::map<std::string, int> argsMap;
-    // This loop loops over each of the input arguments.
-    // argNum is initialized to 1 because the first
-    // "argument" provided to the program is actually the
-    // name of the executable (in our case, "raytracer").
-    for( int argNum = 1; argNum < argc; ++argNum )
-    {
-        // std::cout << "Argument " << argNum << " is: " << argv[argNum] << std::endl;
-        std::string arg = argv[argNum];
-        if (arg[0] == '-') // Check if it is an argument
-        {
-            argsMap.insert(std::pair<string, int>(arg, argNum));
-        }
-    }
-
-    // === Help ===
-    if ( argsMap.find("-help") != argsMap.end() || argc == 1) {
-        std::cout << help << endl;
-        return 0;
-    }
-
-    // === Version ===
-    if ( argsMap.find("-version") != argsMap.end() ) {
-        std::cout << version << endl;
-        return 0;
-    }
-
-    // === Input ===
-    std::string inputFileName = parseArgString("-input", argsMap, argc, argv);
-    if (inputFileName.empty()) {
-        return 1;
-    }
-    std::cout << "Input file: " << inputFileName << endl;
-
-    // === Output ===
-    std::string outputFileName = parseArgString("-output", argsMap, argc, argv);
-    if (outputFileName.empty()) {
-        return 1;
-    }
-    std::cout << "Output file: " << outputFileName << endl;
-
-    std::pair<int, int> size = parseArgIntPair("-size", argsMap, argc, argv);
-    int width = size.first;
-    int height = size.second;
-    if (width > 0 && height > 0) {
-        std::cout << "Size (width, height): (" << width << ", " << height << ")" << endl;
-    } else {
-        std::cout << "Please enter a valid image size (width > 0, height > 0)." << endl;
-        return 1;
-    }
+    ArgParser args = ArgParser::ArgParser(argc, argv);
 
     // First, parse the scene using SceneParser.
-    SceneParser scene = SceneParser::SceneParser(inputFileName.c_str());
+    SceneParser scene = SceneParser::SceneParser(args.input_file);
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
@@ -158,13 +59,13 @@ int main( int argc, char* argv[] )
     // through that pixel and finding its intersection with
     // the scene.  Write the color at the intersection to that
     // pixel in your output image.
-    Image image( width, height );
+    Image image( args.width, args.height );
     float tmin = camera->getTMin();
-    for (int x = 0; x < width; x++)
+    for (int x = 0; x < args.width; x++)
     {
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < args.height; y++) {
 
-            Vector2f point ( (x+0.5)/width, (y+0.5)/height );
+            Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
             Ray ray = camera->generateRay(point);
             Hit hit = Hit();
             bool doesIntersect = group->intersect(ray, hit, tmin);
@@ -172,7 +73,12 @@ int main( int argc, char* argv[] )
             ///TODO: below demonstrates how to use the provided Image class
             ///Should be removed when you start
             if (doesIntersect) {
-                Vector3f pixelColor (1.0f,0,0);
+                float t = hit.getT();
+                t -= args.depth_min;
+                t *= 1/(args.depth_max - args.depth_min);
+                t = 1 - t;
+                // std::cout << "T: " << t << endl;
+                Vector3f pixelColor (t, t, t);
                 //width and height
                 image.SetPixel( x, y, pixelColor );
             }
@@ -181,7 +87,7 @@ int main( int argc, char* argv[] )
     }
 
     // Save image to output file
-    image.SaveImage(outputFileName.c_str());
+    image.SaveImage(args.output_file);
 
     return 0;
 }

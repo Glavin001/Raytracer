@@ -1,5 +1,3 @@
-#LOOK AT THIS LATER
-
 #ifndef ARG_PARSER_H
 #define ARG_PARSER_H
 
@@ -22,42 +20,42 @@ public:
 
       // rendering output
       if (!strcmp(argv[i],"-input")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	input_file = argv[i];
       } else if (!strcmp(argv[i],"-output")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	output_file = argv[i];
       } else if (!strcmp(argv[i],"-normals")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	normals_file = argv[i];
       } else if (!strcmp(argv[i],"-size")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	width = atoi(argv[i]);
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	height = atoi(argv[i]);
-      } 
+      }
 
       // rendering options
       else if (!strcmp(argv[i],"-depth")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	depth_min = (float)atof(argv[i]);
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	depth_max = (float)atof(argv[i]);
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	depth_file = argv[i];
       } else if (!strcmp(argv[i],"-bounces")) {
-	i++; assert (i < argc); 
+	i++; assert (i < argc);
 	bounces = atoi(argv[i]);
       } else if (!strcmp(argv[i],"-shadows")) {
 	shadows = 1;
       }
-      
+
       // supersampling
       else if (strcmp(argv[i],"-jitter")==0) {
 	jitter = 1;
       }else if(strcmp(argv[i],"-filter")==0){
         filter =1;
-      } 
+      }
       else {
         printf ("Unknown command line argument %d: '%s'\n",i,argv[i]);
         assert(0);

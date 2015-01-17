@@ -57,7 +57,7 @@ public:
         this->up = up;
         this->size = size;
         // find right/horizontal vector:
-        this->horizontal = Vector3f::cross(direction.normalized(), up.normalized());
+        this->horizontal = Vector3f::cross(direction, up);
     }
 
     virtual Ray generateRay( const Vector2f& point) {

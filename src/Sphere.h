@@ -41,9 +41,17 @@ public:
         float thc = sqrt(radius2 - d2);
         float t0 = tca - thc;
         float t1 = tca + thc;
-        if (t0 > h.getT()) return false;
-        // else h.t = t0;
-        return true;
+        if (t0 < tmin) {
+            return false;
+        }
+        else if (t0 > h.getT()) {
+            return false;
+        }
+        else {
+            Vector3f normal (0.0, 0.0, 0.0);
+            h.set(t0, material, normal);
+            return true;
+        }
 
     }
 
