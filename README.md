@@ -26,8 +26,16 @@ After compiling (see above):
 
 ## Testing
 
+### Unit Testing
+
 ```bash
 make test
+```
+
+### Rendering Sample Images
+
+```bash
+make render
 ```
 
 Then look into the `out/` for all of the rendered images.
