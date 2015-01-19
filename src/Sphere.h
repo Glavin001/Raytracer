@@ -31,28 +31,69 @@ public:
 
     virtual bool intersect( const Ray& r, Hit& h, float tmin){
 
-        // geometric solution
-        float radius2 = radius * radius;
-        Vector3f L = center - r.getOrigin();
-        float tca = Vector3f::dot(L, r.getDirection());
-        if (tca < 0) return false;
-        float d2 = Vector3f::dot(L, L) - tca * tca;
-        if (d2 > radius2) return false;
-        float thc = sqrt(radius2 - d2);
-        float t0 = tca - thc;
-        float t1 = tca + thc;
-        if (t0 < tmin) {
-            return false;
-        }
-        else if (t0 > h.getT()) {
-            return false;
-        }
-        else {
-            Vector3f normal (0.0, 0.0, 0.0);
-            h.set(t0, material, normal);
-            return true;
-        }
+        // Precompute variables
+        float radius2 = pow(radius, 2);
+        Vector3f d = r.getDirection(); // Ray Direction
+        Vector3f eMinusC = r.getOrigin() - center;
+        float dTimesD = Vector3f::dot(d, d);
+        // Calculate the discriminate
+        float discriminate = (
+            pow(
+                Vector3f::dot(
+                    r.getDirection(),
+                    eMinusC
+                    )
+                , 2
+                )
+            -
+            (
+                dTimesD * (
+                    Vector3f::dot(eMinusC, eMinusC)
+                    - radius2
+                    )
+            )
+            );
 
+        // Check for possible intersection
+        // If discriminate is negative then there is no intersection
+        // and it is not necessary to continue calculations
+        if (discriminate >= 0)
+        {
+            float sqrtDiscr = sqrt(discriminate);
+            // Complete Quadratic Equation calculation
+            // Get Left-Hand-Side
+            float lhs = -1*Vector3f::dot(d, eMinusC);
+            // Calculate for positive and negative discriminate
+            float pos = (lhs + sqrtDiscr) / dTimesD;
+            float neg = (lhs - sqrtDiscr) / dTimesD;
+            // Check if either positive or negative discriminate solutions
+            // are greater than tmin
+            if (pos > tmin || neg > tmin) {
+                // Positive discriminate solution
+                if (pos > tmin )
+                {
+                    // Check if new t is better/closer than old t
+                    if (pos < h.getT())
+                    {
+                        // Closer than current t in hit
+                        Vector3f normal (0.0, 0, 0);
+                        h.set(pos, material, normal);
+                    }
+                }
+                // Negative discriminate solution
+                if (neg > tmin) {
+                    // Check if new t is better/closer than old t
+                    if (neg < h.getT()) {
+                        // Closer than current t in hit
+                        Vector3f normal (0.0, 0, 0);
+                        h.set(neg, material, normal);
+                    }
+                }
+                return true;
+            }
+        }
+        // No intersection
+        return false;
     }
 
 protected:
