@@ -46,6 +46,19 @@ int main( int argc, char* argv[] )
                        "\traytracer -input scene1_07.txt -size 200 200 -output output1_07.tga -depth -2 2 depth1_07.tga\n"
                        "\n";
 
+    if (argc == 1 || (strcmp(argv[1], "-help") == 0)) {
+        // No arguments or `-help`
+        // Print help
+        std::cout << help << endl;
+        return 0;
+    }
+    else if (argc == 2 && (strcmp(argv[1], "-version") == 0)) {
+        // `-version`
+        // Print version
+        std::cout << version << endl;
+        return 0;
+    }
+
     ArgParser args = ArgParser::ArgParser(argc, argv);
 
     // First, parse the scene using SceneParser.
@@ -70,15 +83,15 @@ int main( int argc, char* argv[] )
             Hit hit = Hit();
             bool doesIntersect = group->intersect(ray, hit, tmin);
 
-            ///TODO: below demonstrates how to use the provided Image class
-            ///Should be removed when you start
             if (doesIntersect) {
-                float t = hit.getT();
-                t -= args.depth_min;
-                t *= 1/(args.depth_max - args.depth_min);
-                t = 1 - t;
-                // std::cout << "T: " << t << endl;
-                Vector3f pixelColor (t, t, t);
+                // float t = hit.getT();
+                // // std::cout << "T before: " << t << endl;
+                // t -= args.depth_min;
+                // t *= 1/(args.depth_max - args.depth_min);
+                // t = 1 - t;
+                // // std::cout << "T after: " << t << endl;
+                // Vector3f pixelColor (t, t, t);
+                Vector3f pixelColor (1.0f, 0, 0);
                 //width and height
                 image.SetPixel( x, y, pixelColor );
             }
