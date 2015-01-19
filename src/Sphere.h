@@ -34,7 +34,8 @@ public:
         // Precompute variables
         float radius2 = pow(radius, 2);
         Vector3f d = r.getDirection(); // Ray Direction
-        Vector3f eMinusC = r.getOrigin() - center;
+        Vector3f e = r.getOrigin();
+        Vector3f eMinusC = e - center;
         float dTimesD = Vector3f::dot(d, d);
         // Calculate the discriminate
         float discriminate = (
@@ -76,7 +77,7 @@ public:
                     if (pos < h.getT())
                     {
                         // Closer than current t in hit
-                        Vector3f normal (0.0, 0, 0);
+                        Vector3f normal = 2*(e - center);
                         h.set(pos, material, normal);
                     }
                 }
@@ -85,7 +86,7 @@ public:
                     // Check if new t is better/closer than old t
                     if (neg < h.getT()) {
                         // Closer than current t in hit
-                        Vector3f normal (0.0, 0, 0);
+                        Vector3f normal = 2*(e - center);
                         h.set(neg, material, normal);
                     }
                 }
