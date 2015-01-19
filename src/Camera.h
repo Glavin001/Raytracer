@@ -53,8 +53,8 @@ class OrthographicCamera : public Camera
 public:
     OrthographicCamera(const Vector3f& center, const Vector3f& direction,const Vector3f& up, int size){
         this->center = center;
-        this->direction = direction;
-        this->up = up;
+        this->direction = direction.normalized();
+        this->up = up.normalized();
         this->size = size;
         // find right/horizontal vector:
         this->horizontal = Vector3f::cross(direction, up);
