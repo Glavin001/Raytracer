@@ -7,3 +7,4 @@ make
 ./bin/raytracer.o -input in/scene1_05.txt -size 200 200 -output out/scene1_05.bmp -depth 14.5 19.5 f
 ./bin/raytracer.o -input in/scene1_06.txt -size 200 200 -output out/scene1_06.bmp -depth 3 7 f
 ./bin/raytracer.o -input in/scene1_07.txt -size 200 200 -output out/scene1_07.bmp -depth -2 2 f
+./bin/raytracer.o -input in/scene1_08.txt -size 200 200 -output out/scene1_08.bmp -depth 0 10 f

@@ -84,6 +84,10 @@ public:
             return false;
         }
 
+        // Closer than current t in hit
+        Vector3f normal (0.0, 0, 0);
+        hit.set(t, material, normal);
+
         return true;
 
     }

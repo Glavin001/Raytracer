@@ -84,14 +84,14 @@ int main( int argc, char* argv[] )
             bool doesIntersect = group->intersect(ray, hit, tmin);
 
             if (doesIntersect) {
-                // float t = hit.getT();
-                // // std::cout << "T before: " << t << endl;
-                // t -= args.depth_min;
-                // t *= 1/(args.depth_max - args.depth_min);
-                // t = 1 - t;
-                // // std::cout << "T after: " << t << endl;
-                // Vector3f pixelColor (t, t, t);
-                Vector3f pixelColor (1.0f, 0, 0);
+                float t = hit.getT();
+                // std::cout << "T before: " << t << endl;
+                t -= args.depth_min;
+                t *= 1/(args.depth_max - args.depth_min);
+                t = 1 - t;
+                // std::cout << "T after: " << t << endl;
+                Vector3f pixelColor (t, t, t);
+                // Vector3f pixelColor (1.0f, 0, 0);
                 //width and height
                 image.SetPixel( x, y, pixelColor );
             }

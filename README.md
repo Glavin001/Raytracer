@@ -24,6 +24,14 @@ After compiling (see above):
 ./bin/raytracer.o
 ```
 
+## Testing
+
+```bash
+make test
+```
+
+Then look into the `out/` for all of the rendered images.
+
 ## Author
 
 - Glavin Wiechert

@@ -26,22 +26,11 @@ Materials {
 }
 
 Group {
-    numObjects 3
+    numObjects 1
     MaterialIndex 0
-    Sphere {
-    center 0 0 0
-        radius 1
-    }
-    MaterialIndex 1
     Triangle {
-        vertex0 -2 0.2 0
-    vertex1 2 0.2 0
-    vertex2 0 2 0
-    }
-    MaterialIndex 2
-    Triangle {
-        vertex0 -2 -0.2 0
-    vertex1 2 -0.2 0
-    vertex2 0 -2 0
+        vertex0 -2 0.2 1
+        vertex1 2 0.2 0
+        vertex2 0 2 0
     }
 }

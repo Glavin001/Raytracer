@@ -19,3 +19,6 @@ $(PROG): $(OBJS)
 
 clean:
 	rm -f *.bak ${SRCDIR}vecmath/src/*.o ${SRCDIR}*.o core.* $(PROG)
+
+test: clean $(PROG)
+	./test/run.sh
