@@ -30,7 +30,7 @@ Group {
     MaterialIndex 0
     Triangle {
         vertex0 -2 0.2 1
-        vertex1 2 0.2 0
-        vertex2 0 2 0
+        vertex1 2 0.3 0
+        vertex2 1 2 0
     }
 }
