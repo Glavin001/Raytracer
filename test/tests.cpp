@@ -1,13 +1,20 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.h"
+#include <vecmath.h>
+#include <float.h>
+#include "../src/Camera.h"
 
-unsigned int Factorial( unsigned int number ) {
-    return number <= 1 ? number : Factorial(number-1)*number;
-}
+TEST_CASE("OrthographicCamera can be constructed","[OrthographicCamera]") {
 
-TEST_CASE( "Factorials are computed", "[factorial]" ) {
-    REQUIRE( Factorial(1) == 1 );
-    REQUIRE( Factorial(2) == 2 );
-    REQUIRE( Factorial(3) == 6 );
-    REQUIRE( Factorial(10) == 3628800 );
+    SECTION("Constructor") {
+
+        Vector3f center (0, 0, 10);
+        Vector3f direction (0, 0, 1);
+        Vector3f up (0, 1, 0);
+        int size = 5;
+        Camera *camera = new OrthographicCamera(center, direction, up, size);
+        CHECK(true);
+        
+    }
+
 }

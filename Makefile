@@ -8,6 +8,7 @@ TESTDIR = test/
 SRCS = $(wildcard ${SRCDIR}*.cpp)
 SRCS += $(wildcard ${SRCDIR}vecmath/src/*.cpp)
 TESTS = $(wildcard ${TESTDIR}*.cpp)
+TESTS += $(filter-out ${SRCDIR}main.cpp,$(SRCS))
 
 OBJS = $(SRCS:.cpp=.o)
 TESTOBJS = $(TESTS:.cpp=.o)
@@ -39,7 +40,7 @@ clean-misc:
 
 clean: clean-src clean-test clean-misc clean-bin
 
-$(TESTPROG): $(OBJS) $(TESTOBJS)
+$(TESTPROG): $(TESTOBJS)
 	$(CC) $(CFLAGS) $(TESTOBJS) -o $@ $(LINKFLAGS)
 
 test: $(TESTPROG)
