@@ -69,7 +69,7 @@ public:
         float u = left+(right-left)*point.x();
         float v = bottom+(top-bottom)*point.y();
         Vector3f origin = center + (v*up) + (u*horizontal);
-        return Ray::Ray(origin, this->direction);
+        return Ray(origin, this->direction);
     }
 
     virtual float getTMin() const {

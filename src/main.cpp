@@ -59,10 +59,10 @@ int main( int argc, char* argv[] )
         return 0;
     }
 
-    ArgParser args = ArgParser::ArgParser(argc, argv);
+    ArgParser args = ArgParser(argc, argv);
 
     // First, parse the scene using SceneParser.
-    SceneParser scene = SceneParser::SceneParser(args.input_file);
+    SceneParser scene = SceneParser(args.input_file);
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
