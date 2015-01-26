@@ -14,7 +14,19 @@ TEST_CASE("OrthographicCamera can be constructed","[OrthographicCamera]") {
         int size = 5;
         Camera *camera = new OrthographicCamera(center, direction, up, size);
         CHECK(true);
-        
+
+    }
+
+    SECTION("Direction") {
+        Vector3f center (0, 0, 10);
+        Vector3f direction (0, 0, 1);
+        Vector3f up (0, 1, 0);
+        int size = 5;
+
+        Camera *camera = new OrthographicCamera(center, direction, up, size);
+
+        CHECK(true);
+
     }
 
 }

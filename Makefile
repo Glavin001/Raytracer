@@ -43,8 +43,10 @@ clean: clean-src clean-test clean-misc clean-bin
 $(TESTPROG): $(TESTOBJS)
 	$(CC) $(CFLAGS) $(TESTOBJS) -o $@ $(LINKFLAGS)
 
-test: $(TESTPROG)
-	${TESTPROG}
+test: $(TESTPROG) FORCE
+	${TESTPROG} --success --durations yes
+
+FORCE:
 
 run: $(PROG)
 	${PROG}
