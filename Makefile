@@ -52,4 +52,4 @@ run: $(PROG)
 	${PROG}
 
 render: $(PROG)
-	${TESTDIR}/run.sh
+	${TESTDIR}run.sh
