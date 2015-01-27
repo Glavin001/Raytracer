@@ -113,7 +113,10 @@ int main( int argc, char* argv[] )
                 }
 
                 if (normalsFile != NULL) {
-                    normalsImage.SetPixel(x, y, hit.getNormal());
+                    Vector3f normal = hit.getNormal();
+                    normal = Vector3f (abs(normal.x()), abs(normal.y()), abs(normal.z()));
+                    std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
+                    normalsImage.SetPixel(x, y, normal);
                 }
 
             }
