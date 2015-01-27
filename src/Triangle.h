@@ -85,7 +85,7 @@ public:
         }
 
         // Closer than current t in hit
-        Vector3f normal (0.0, 0, 0);
+        Vector3f normal = Vector3f::cross(va, vb);
         hit.set(t, material, normal);
 
         return true;
