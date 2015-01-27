@@ -35,3 +35,5 @@ echo "=== Render input files with depth ==="
 ./bin/raytracer.o -input in/scene1_08.txt -size 200 200 -output out/scene1_08.bmp -depth 0 10 out/depth1_08.bmp
 
 ./bin/raytracer.o -input in/scene2_04_perspective.txt -size 200 200 -output out/scene2_04_perspective.bmp -depth 8 12 out/depth2_04_perspective.bmp
+
+./bin/raytracer.o -input in/test_plane_1.txt -size 200 200 -output out/test_plane_1.bmp -depth 0 10 out/depth_plane_1.bmp
