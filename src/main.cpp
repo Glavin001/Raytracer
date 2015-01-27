@@ -83,6 +83,9 @@ int main( int argc, char* argv[] )
 
             Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
             Ray ray = camera->generateRay(point);
+
+            //std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
+
             Hit hit = Hit();
             bool doesIntersect = group->intersect(ray, hit, tmin);
 
