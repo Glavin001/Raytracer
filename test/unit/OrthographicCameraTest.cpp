@@ -1,9 +1,7 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.h"
+#include "../catch.h"
 #include <vecmath.h>
 #include <float.h>
-#include "../src/Camera.h"
-#include "../src/OrthographicCamera.h"
+#include "../../src/OrthographicCamera.h"
 
 TEST_CASE("OrthographicCamera - constructor","[OrthographicCamera]") {
 
@@ -46,12 +44,12 @@ TEST_CASE("OrthographicCamera - generateRay","[OrthographicCamera]") {
         Vector2f point ( 0.5, 0.5 ); // Middle
         Ray ray = camera->generateRay(point);
 
-        std::cout << "ray origin : (" << ray.getOrigin()[0] << ", " << ray.getOrigin()[1] << ", "<< ray.getOrigin()[2] << ")" << endl;
-        std::cout << "ray direction : (" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ")" << endl;
+        // std::cout << "ray origin : (" << ray.getOrigin()[0] << ", " << ray.getOrigin()[1] << ", "<< ray.getOrigin()[2] << ")" << endl;
+        // std::cout << "ray direction : (" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ")" << endl;
 
         Vector3f origin = ray.getOrigin();
         Vector3f dir = ray.getDirection();
-        
+
         CHECK(dir.x() == direction.x());
         CHECK(dir.y() == direction.y());
         CHECK(dir.z() == direction.z());
@@ -74,8 +72,8 @@ TEST_CASE("OrthographicCamera - generateRay","[OrthographicCamera]") {
         Vector2f point ( 0, 0 ); // Middle
         Ray ray = camera->generateRay(point);
 
-        std::cout << "ray origin : (" << ray.getOrigin()[0] << ", " << ray.getOrigin()[1] << ", "<< ray.getOrigin()[2] << ")" << endl;
-        std::cout << "ray direction : (" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ")" << endl;
+        // std::cout << "ray origin : (" << ray.getOrigin()[0] << ", " << ray.getOrigin()[1] << ", "<< ray.getOrigin()[2] << ")" << endl;
+        // std::cout << "ray direction : (" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ")" << endl;
 
         Vector3f origin = ray.getOrigin();
         Vector3f dir = ray.getDirection();

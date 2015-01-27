@@ -8,6 +8,7 @@ TESTDIR = test/
 SRCS = $(wildcard ${SRCDIR}*.cpp)
 SRCS += $(wildcard ${SRCDIR}vecmath/src/*.cpp)
 TESTS = $(wildcard ${TESTDIR}*.cpp)
+TESTS += $(wildcard ${TESTDIR}unit/*.cpp)
 TESTS += $(filter-out ${SRCDIR}main.cpp,$(SRCS))
 
 OBJS = $(SRCS:.cpp=.o)
@@ -27,7 +28,7 @@ $(PROG): $(OBJS)
 	$(CC) $(CFLAGS) $< -c -o $@ $(INCFLAGS)
 
 clean-test:
-	rm -f ${TESTDIR}*.o
+	rm -f ${TESTDIR}*.o  ${TESTDIR}unit/*.o
 
 clean-src:
 	rm -f *.bak ${SRCDIR}vecmath/src/*.o ${SRCDIR}*.o core.*
@@ -44,7 +45,7 @@ $(TESTPROG): $(TESTOBJS)
 	$(CC) $(CFLAGS) $(TESTOBJS) -o $@ $(LINKFLAGS)
 
 test: $(TESTPROG) FORCE
-	${TESTPROG} --success --durations yes
+	${TESTPROG} --durations yes
 
 FORCE:
 
