@@ -13,8 +13,9 @@ for f in $IN_FILES
 do
     filename=$(basename ${f})
     echo "===== Processing scene file '$filename'... ====="
+    filenameNoExt=${filename%%.*}
 
-    cmd="./bin/raytracer.o -input ${IN_DIR}${filename} -size 200 200 -output ${OUT_DIR}${filename%%.*}.bmp"
+    cmd="./bin/raytracer.o -input ${IN_DIR}${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}.bmp -normals ${OUT_DIR}normal_${filenameNoExt}.bmp"
     echo ${cmd}
 
     # Execute command

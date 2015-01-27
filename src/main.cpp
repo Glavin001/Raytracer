@@ -66,7 +66,9 @@ int main( int argc, char* argv[] )
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
+    char *outputFile = args.output_file;
     char *depthFile = args.depth_file;
+    char *normalsFile = args.normals_file;
 
     std::cout << "# of Objects in Group: " << (int) group->getGroupSize() << endl;
 
@@ -76,6 +78,8 @@ int main( int argc, char* argv[] )
     // pixel in your output image.
     Image image( args.width, args.height );
     Image depthImage ( args.width, args.height );
+    Image normalsImage ( args.width, args.height );
+
     float tmin = camera->getTMin();
     for (int x = 0; x < args.width; x++)
     {
@@ -108,15 +112,24 @@ int main( int argc, char* argv[] )
 
                 }
 
+                if (normalsFile != NULL) {
+                    normalsImage.SetPixel(x, y, hit.getNormal());
+                }
+
             }
 
         }
     }
 
     // Save image to output file
-    image.SaveImage(args.output_file);
+    image.SaveImage(outputFile);
+    // Depth file
     if (depthFile != NULL) {
         depthImage.SaveImage(depthFile);
+    }
+    // Normals file
+    if (normalsFile != NULL) {
+        normalsImage.SaveImage(normalsFile);
     }
 
     return 0;
