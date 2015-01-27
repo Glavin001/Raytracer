@@ -77,7 +77,8 @@ public:
                     if (pos < h.getT())
                     {
                         // Closer than current t in hit
-                        Vector3f normal = 2*(e - center);
+                        Vector3f p = e + pos * d;
+                        Vector3f normal = 2*(p - center);
                         h.set(pos, material, normal);
                     }
                 }
@@ -86,7 +87,8 @@ public:
                     // Check if new t is better/closer than old t
                     if (neg < h.getT()) {
                         // Closer than current t in hit
-                        Vector3f normal = 2*(e - center);
+                        Vector3f p = e + neg * d;
+                        Vector3f normal = 2*(p - center);
                         h.set(neg, material, normal);
                     }
                 }
