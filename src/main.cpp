@@ -96,10 +96,12 @@ int main( int argc, char* argv[] )
             if (doesIntersect) {
                 float t = hit.getT();
 
-                // Ray Caster Image
-                Vector3f pixelColor (1.0f, 0, 0);
-                //width and height
-                image.SetPixel( x, y, pixelColor );
+                if (outputFile != NULL) {
+                    // Ray Caster Image
+                    Vector3f pixelColor (1.0f, 0, 0);
+                    //width and height
+                    image.SetPixel( x, y, pixelColor );
+                }
 
                 if (depthFile != NULL) {
                     // std::cout << "T before: " << t << endl;
@@ -115,7 +117,7 @@ int main( int argc, char* argv[] )
                 if (normalsFile != NULL) {
                     Vector3f normal = hit.getNormal();
                     normal = Vector3f (abs(normal.x()), abs(normal.y()), abs(normal.z()));
-                    std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
+                    // std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
                     normalsImage.SetPixel(x, y, normal);
                 }
 
@@ -125,7 +127,9 @@ int main( int argc, char* argv[] )
     }
 
     // Save image to output file
-    image.SaveImage(outputFile);
+    if (outputFile != NULL) {
+        image.SaveImage(outputFile);
+    }
     // Depth file
     if (depthFile != NULL) {
         depthImage.SaveImage(depthFile);

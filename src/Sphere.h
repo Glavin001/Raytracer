@@ -78,7 +78,7 @@ public:
                     {
                         // Closer than current t in hit
                         Vector3f p = e + pos * d;
-                        Vector3f normal = 2*(p - center);
+                        Vector3f normal = (2*(p - center)).normalized();
                         h.set(pos, material, normal);
                     }
                 }
@@ -88,7 +88,7 @@ public:
                     if (neg < h.getT()) {
                         // Closer than current t in hit
                         Vector3f p = e + neg * d;
-                        Vector3f normal = 2*(p - center);
+                        Vector3f normal = (2*(p - center)).normalized();
                         h.set(neg, material, normal);
                     }
                 }
