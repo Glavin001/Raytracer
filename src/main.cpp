@@ -85,6 +85,8 @@ int main( int argc, char* argv[] )
     {
         for (int y = 0; y < args.height; y++) {
 
+            // std::cout << "p = ("<< x << ", " << y << ")" << endl;
+
             Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
             Ray ray = camera->generateRay(point);
 
