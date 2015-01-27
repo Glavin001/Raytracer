@@ -34,3 +34,4 @@
 # === Project Specific ===
 *.bmp
 !in/*.obj
+docs/

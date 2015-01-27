@@ -54,3 +54,6 @@ run: $(PROG)
 
 render: $(PROG)
 	${TESTDIR}render.sh
+
+docs: FORCE
+	doxygen

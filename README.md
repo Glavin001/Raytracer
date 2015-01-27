@@ -40,6 +40,14 @@ make render
 
 Then look into the `out/` for all of the rendered images.
 
+## Documentation
+
+Using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
+
+```bash
+make docs
+```
+
 ## Author
 
 - Glavin Wiechert
