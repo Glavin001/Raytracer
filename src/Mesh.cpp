@@ -91,16 +91,43 @@ Mesh::Mesh(const char * filename,Material * material) : Object3D(material)
 
 void Mesh::compute_norm()
 {
-    n.resize(v.size());
+    // std::cout << "Compute norm, " << n.size() << ", " << v.size() << endl;
+
+    // FIXME: v.size() is not large enough for some tested high res .obj
+    n.resize(v.size() + texCoord.size());
+
+    // std::cout << "resize complete, " << n.size() << ", " << t.size() << endl;
+
     for(unsigned int ii=0; ii<t.size(); ii++) {
+        // std::cout << "ii: "<<ii<<endl;
+
         Vector3f a = v[t[ii][1]] - v[t[ii][0]];
+        // std::cout << "a: "<<a<<endl;
+
         Vector3f b = v[t[ii][2]] - v[t[ii][0]];
+        // std::cout << "b1: "<<b<<endl;
+
         b=Vector3f::cross(a,b);
+        // std::cout << "b2: "<<b<<endl;
+
         for(int jj=0; jj<3; jj++) {
-            n[t[ii][jj]]+=b;
+            try {
+                int p = t.at(ii)[jj];
+                // std::cout << "ii: "<<ii<< ", " << "jj: " << jj << ", p: "<< p << ", n:"<<n.size() <<endl;
+
+                n.at(p) += b;
+            } catch (const std::out_of_range& oor) {
+                std::cerr << "Out of Range error: " << oor.what() << '\n';
+            }
         }
+
     }
+    // std::cout << "done loop 1" << endl;
+
     for(unsigned int ii=0; ii<v.size(); ii++) {
         n[ii] = n[ii]/ n[ii].abs();
     }
+
+    // std::cout << "done loop 2" << endl;
+
 }
