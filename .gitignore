@@ -1,6 +1,3 @@
-# === Project Specific ===
-*.bmp
-a4
 
 # === C++ ===
 
@@ -32,3 +29,8 @@ a4
 *.exe
 *.out
 *.app
+
+
+# === Project Specific ===
+*.bmp
+!in/*.obj
