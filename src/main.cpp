@@ -80,6 +80,10 @@ int main( int argc, char* argv[] )
     Image depthImage ( args.width, args.height );
     Image normalsImage ( args.width, args.height );
 
+    // Flush background colour
+    Vector3f backgroundColor = scene.getBackgroundColor();
+    image.SetAllPixels(backgroundColor);
+
     float tmin = camera->getTMin();
     for (int x = 0; x < args.width; x++)
     {
