@@ -9,7 +9,7 @@
 class OrthographicCamera : public Camera
 {
 public:
-    OrthographicCamera(const Vector3f& center, const Vector3f& direction, const Vector3f& up, int size){
+    OrthographicCamera(const Vector3f& center, const Vector3f& direction, const Vector3f& up, float size){
         this->center = center;
         this->size = size;
 
@@ -46,7 +46,7 @@ public:
     }
 
 private:
-    int size;
+    float size;
     float left;
     float right;
     float top;

@@ -9,7 +9,7 @@ Material::~Material()
 {
 }
 
-Vector3f Material::getDiffuseColor() const 
+Vector3f Material::getDiffuseColor() const
 { return  diffuseColor;}
 
 Vector3f Material::Shade( const Ray& ray, const Hit& hit,
@@ -38,7 +38,7 @@ Vector3f Material::pointwiseDot( const Vector3f& v1 , const Vector3f& v2 ) {
 
 float Material::clampedDot( const Vector3f& L , const Vector3f& N )const {
 	float d = Vector3f::dot(L,N);
-	return (d>0)? d : 0 ; 
+	return (d>0)? d : 0 ;
 }
 void Material::loadTexture(const char * filename){
 	t.load(filename);
@@ -53,7 +53,19 @@ Vector3f Material::getSpecularColor(){
 	return specularColor;
 }
 
+Vector3f Material::getReflectiveColor() {
+	return reflectiveColor;
+}
+
+float Material::getShininess() {
+	return shininess;
+}
 void Material::setNoise(const Noise & n)
 {
 	noise=n;
+}
+
+void Material::setReflectiveColor(const Vector3f& c)
+{
+	reflectiveColor = c;
 }
