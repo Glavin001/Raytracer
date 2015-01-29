@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "RayTracer.h"
 #include "SceneParser.h"
 #include "Image.h"
 #include "Camera.h"
@@ -66,6 +67,9 @@ int main( int argc, char* argv[] )
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
+    int maxBounces = 2;
+    RayTracer raytracer = RayTracer(&scene, maxBounces);
+
     char *outputFile = args.output_file;
     char *depthFile = args.depth_file;
     char *normalsFile = args.normals_file;
@@ -80,10 +84,6 @@ int main( int argc, char* argv[] )
     Image depthImage ( args.width, args.height );
     Image normalsImage ( args.width, args.height );
 
-    // Flush background colour
-    Vector3f backgroundColor = scene.getBackgroundColor();
-    image.SetAllPixels(backgroundColor);
-
     float tmin = camera->getTMin();
     for (int x = 0; x < args.width; x++)
     {
@@ -97,36 +97,33 @@ int main( int argc, char* argv[] )
             //std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
 
             Hit hit = Hit();
-            bool doesIntersect = group->intersect(ray, hit, tmin);
+            // bool doesIntersect = group->intersect(ray, hit, tmin);
+            Vector3f pixelColor = raytracer.traceRay(ray, tmin, 0, 0.0f, hit);
 
-            if (doesIntersect) {
-                float t = hit.getT();
+            float t = hit.getT();
 
-                if (outputFile != NULL) {
-                    // Ray Caster Image
-                    Vector3f pixelColor (1.0f, 0, 0);
-                    //width and height
-                    image.SetPixel( x, y, pixelColor );
-                }
+            if (outputFile != NULL) {
+                // Ray Caster Image
+                //width and height
+                image.SetPixel( x, y, pixelColor );
+            }
 
-                if (depthFile != NULL) {
-                    // std::cout << "T before: " << t << endl;
-                    t -= args.depth_min;
-                    t *= 1/(args.depth_max - args.depth_min);
-                    t = 1 - t;
-                    // std::cout << "T after: " << t << endl;
-                    Vector3f depthPixelColor (t, t, t);
-                    depthImage.SetPixel(x, y, depthPixelColor);
+            if (depthFile != NULL) {
+                // std::cout << "T before: " << t << endl;
+                t -= args.depth_min;
+                t *= 1/(args.depth_max - args.depth_min);
+                t = 1 - t;
+                // std::cout << "T after: " << t << endl;
+                Vector3f depthPixelColor (t, t, t);
+                depthImage.SetPixel(x, y, depthPixelColor);
 
-                }
+            }
 
-                if (normalsFile != NULL) {
-                    Vector3f normal = hit.getNormal();
-                    normal = Vector3f (abs(normal.x()), abs(normal.y()), abs(normal.z()));
-                    // std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
-                    normalsImage.SetPixel(x, y, normal);
-                }
-
+            if (normalsFile != NULL) {
+                Vector3f normal = hit.getNormal();
+                normal = Vector3f (abs(normal.x()), abs(normal.y()), abs(normal.z()));
+                // std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
+                normalsImage.SetPixel(x, y, normal);
             }
 
         }
