@@ -67,8 +67,7 @@ int main( int argc, char* argv[] )
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
-    int maxBounces = 2;
-    RayTracer raytracer = RayTracer(&scene, maxBounces);
+    RayTracer raytracer = RayTracer(&scene, args.bounces);
 
     char *outputFile = args.output_file;
     char *depthFile = args.depth_file;

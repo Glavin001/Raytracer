@@ -43,5 +43,15 @@ ${BIN} -input scene2_04_perspective.txt -size 200 200 -output ${OUT_DIR}scene2_0
 
 ${BIN} -input test_plane_1.txt -size 200 200 -output ${OUT_DIR}test_plane_1.bmp -depth 0 10 ${OUT_DIR}depth_plane_1.bmp
 
+echo "=== Renderinput files with reflection bounces ==="
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_0.bmp -bounces 0
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_1.bmp -bounces 1
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_2.bmp -bounces 2
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_3.bmp -bounces 3
+
+# High Res Examples
+# ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.bmp
+# ${BIN} -input scene_reflective_shininess_variations.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_shininess_variations.bmp
+
 echo "=== Move back out of '${IN_DIR}' ==="
 cd ..

@@ -68,14 +68,14 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
 
             Hit rhit = Hit( FLT_MAX, NULL, Vector3f( 0, 0, 0 ) );
             Ray rray = Ray(p, dirToLight);
-            if (!group->intersect(rray, rhit, EPSILON)) {
-            // if (!(group->intersect(rray, rhit, EPSILON) && rhit.getT() <= distanceToLight)) {
-                Vector3f normal = hit.getNormal().normalized();
+            // if (!group->intersect(rray, rhit, EPSILON)) {
+            Vector3f normal = hit.getNormal().normalized();
+            if (!(group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
                 // Diffuse
                 Vector3f diffuseColor = material->getDiffuseColor() * intensity * fmax(0, Vector3f::dot(normal, dirToLight));
                 color += diffuseColor;
                 // Specular / Phong
-                Vector3f h = (dirToLight.normalized() + -1*ray.getDirection()).normalized();
+                Vector3f h = (dirToLight.normalized() + -1*ray.getDirection().normalized()).normalized();
                 Vector3f specularColor = material->getSpecularColor() * intensity * pow(Vector3f::dot(normal, h), material->getShininess());
                 color += specularColor;
 
@@ -87,17 +87,25 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
                 // std::cout << "h:(" << h.x() << ", " << h.y() << ", " << h.z() << ")" << endl;
                 // std::cout << "normal dot h: " << Vector3f::dot(normal, h) << endl;
                 //
-                // std::cout << "color:(" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
+                // std::cout << "color1: (" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
 
-                // Specular Reflection
-                // if (bounces < m_maxBounces) {
-                //     Vector3f dirFromMirror = mirrorDirection(normal, ray.getDirection());
-                //     Ray mray = Ray(p, dirFromMirror);
-                //     Hit mhit = Hit();
-                //     color += material->getReflectiveColor() * traceRay(mray, EPSILON, ++bounces, 0.0f, mhit);
-                // }
 
             }
+
+            // Specular Reflection
+            if (bounces < m_maxBounces) {
+                Vector3f dirFromMirror = mirrorDirection(normal, ray.getDirection());
+                Ray mray = Ray(p, dirFromMirror);
+                Hit mhit = Hit();
+                color += material->getReflectiveColor() * traceRay(mray, EPSILON, ++bounces, 0.0f, mhit);
+                // std::cout << "color2: (" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
+                // if (color.x() <= 0.03125f){
+                //     std::cout << "color2: (" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
+                //     std::cout << "dirFromMirror: (" << dirFromMirror.x() << ", " << dirFromMirror.y() << ", " << dirFromMirror.z() << ")" << endl << endl;
+                //     std::cout << "ray.getDirection():(" << ray.getDirection().x() << ", " << ray.getDirection().y() << ", " << ray.getDirection().z() << ")" << endl;
+                // }
+            }
+
         }
         return color;
     } else {
