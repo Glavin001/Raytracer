@@ -55,16 +55,15 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
         // Diffuse and Specular light
         // Check for lights
         int numLights = m_scene->getNumLights();
-        // FIXME: Only single light
-        if (numLights > 0) {
+        for (int i=0; i<numLights; i++) {
             // Get Light
-            Light *light = m_scene->getLight(0);
+            Light *light = m_scene->getLight(i);
 
             Vector3f p = ray.pointAtParameter(hit.getT());
             Vector3f dirToLight;
-            Vector3f intensity;
+            Vector3f lightColor;
             float distanceToLight;
-            light->getIllumination( p, dirToLight, intensity, distanceToLight);
+            light->getIllumination( p, dirToLight, lightColor, distanceToLight);
 
             Hit rhit = Hit( FLT_MAX, NULL, Vector3f( 0, 0, 0 ) );
             Ray rray = Ray(p, dirToLight);
@@ -72,11 +71,11 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             Vector3f normal = hit.getNormal().normalized();
             if (!(group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
                 // Diffuse
-                Vector3f diffuseColor = material->getDiffuseColor() * intensity * fmax(0, Vector3f::dot(normal, dirToLight));
+                Vector3f diffuseColor = material->getDiffuseColor() * lightColor * fmax(0, Vector3f::dot(normal, dirToLight));
                 color += diffuseColor;
                 // Specular / Phong
                 Vector3f h = (dirToLight.normalized() + -1*ray.getDirection().normalized()).normalized();
-                Vector3f specularColor = material->getSpecularColor() * intensity * pow(Vector3f::dot(normal, h), material->getShininess());
+                Vector3f specularColor = material->getSpecularColor() * lightColor * pow(Vector3f::dot(normal, h), material->getShininess());
                 color += specularColor;
 
                 // std::cout << "diffuseColor: (" << diffuseColor.x() << ", " << diffuseColor.y() << ", " << diffuseColor.z() << ")" << endl;
@@ -88,8 +87,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
                 // std::cout << "normal dot h: " << Vector3f::dot(normal, h) << endl;
                 //
                 // std::cout << "color1: (" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
-
-
             }
 
             // Specular Reflection
