@@ -17,19 +17,23 @@ Vector3f mirrorDirection( const Vector3f& normal, const Vector3f& incoming)
 }
 
 bool transmittedDirection( const Vector3f& normal, const Vector3f& incoming,
-        float index_n, float index_nt,
-        Vector3f& transmitted)
+                           float index_n, float index_nt,
+                           Vector3f& transmitted)
 {
 }
 
-RayTracer::RayTracer( SceneParser * scene, int max_bounces
-  //more arguments if you need...
+RayTracer::RayTracer( SceneParser * scene,
+                      int max_bounces,
+                      bool shadows,
+                      bool shade_back
+                      //more arguments if you need...
                       ) :
-  m_scene(scene)
-
+    m_scene(scene)
 {
-  // g=scene->getGroup();
-  m_maxBounces = max_bounces;
+    // g=scene->getGroup();
+    m_maxBounces = max_bounces;
+    m_shadows = shadows;
+    m_shade_back = shade_back;
 }
 
 RayTracer::~RayTracer()
@@ -37,7 +41,7 @@ RayTracer::~RayTracer()
 }
 
 Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
-        float refr_index, Hit& hit ) const
+                              float refr_index, Hit& hit ) const
 {
     hit = Hit( FLT_MAX, NULL, Vector3f( 0, 0, 0 ) );
 
@@ -51,6 +55,15 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
         // Ambient light
         Material* material = hit.getMaterial();
         Vector3f color = material->getDiffuseColor() * m_scene->getAmbientLight();
+        Vector3f normal = hit.getNormal().normalized();
+        Vector3f p = ray.pointAtParameter(hit.getT());
+
+        bool isBack = Vector3f::dot(normal, ray.getDirection()) > 0;
+        if (!m_shade_back && isBack)
+        {
+            // Return Black color
+            return Vector3f(0,0,0);
+        }
 
         // Diffuse and Specular light
         // Check for lights
@@ -59,7 +72,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             // Get Light
             Light *light = m_scene->getLight(i);
 
-            Vector3f p = ray.pointAtParameter(hit.getT());
             Vector3f dirToLight;
             Vector3f lightColor;
             float distanceToLight;
@@ -68,8 +80,10 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             Hit rhit = Hit( FLT_MAX, NULL, Vector3f( 0, 0, 0 ) );
             Ray rray = Ray(p, dirToLight);
             // if (!group->intersect(rray, rhit, EPSILON)) {
-            Vector3f normal = hit.getNormal().normalized();
-            if (!(group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
+
+            // Shadows
+            if (!(m_shadows && group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
+
                 // Diffuse
                 Vector3f diffuseColor = material->getDiffuseColor() * lightColor * fmax(0, Vector3f::dot(normal, dirToLight));
                 color += diffuseColor;

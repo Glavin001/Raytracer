@@ -50,6 +50,8 @@ public:
                 bounces = atoi(argv[i]);
             } else if (!strcmp(argv[i],"-shadows")) {
                 shadows = 1;
+            } else if (!strcmp(argv[i],"-shade_back")) {
+                shade_back = 1;
             }
 
             // supersampling
@@ -80,6 +82,7 @@ public:
         depth_max = 1;
         bounces = 4;
         shadows = 0;
+        shade_back = 0;
 
         // sampling
         jitter = 0;
@@ -104,6 +107,7 @@ public:
     float depth_max;
     int bounces;
     int shadows;
+    int shade_back;
 
     // supersampling
     int jitter;

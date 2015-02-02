@@ -33,5 +33,6 @@
 
 # === Project Specific ===
 *.bmp
+*.tga
 !in/*.obj
 docs/

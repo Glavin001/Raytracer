@@ -19,9 +19,18 @@ do
     echo "===== Processing scene file '$filename'... ====="
     filenameNoExt=${filename%%.*}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}.bmp -normals ${OUT_DIR}normal_${filenameNoExt}.bmp"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_no_back.tga -normals ${OUT_DIR}${filenameNoExt}_normals.tga"
     echo ${cmd}
+    # Execute command
+    ${cmd}
 
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shadows.tga -shadows"
+    echo ${cmd}
+    # Execute command
+    ${cmd}
+
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shade_back.tga -shade_back"
+    echo ${cmd}
     # Execute command
     ${cmd}
 
@@ -30,28 +39,29 @@ do
 done
 
 echo "=== Render input files with depth ==="
-${BIN} -input scene1_01.txt -size 200 200 -output ${OUT_DIR}scene1_01.bmp -depth 9 10 ${OUT_DIR}depth1_01.bmp
-${BIN} -input scene1_02.txt -size 200 200 -output ${OUT_DIR}scene1_02.bmp -depth 8 12 ${OUT_DIR}depth1_02.bmp
-${BIN} -input scene1_03.txt -size 200 200 -output ${OUT_DIR}scene1_03.bmp -depth 8 12 ${OUT_DIR}depth1_03.bmp
-${BIN} -input scene1_04.txt -size 200 200 -output ${OUT_DIR}scene1_04.bmp -depth 12 17 ${OUT_DIR}depth1_04.bmp
-${BIN} -input scene1_05.txt -size 200 200 -output ${OUT_DIR}scene1_05.bmp -depth 14.5 19.5 ${OUT_DIR}depth1_05.bmp
-${BIN} -input scene1_06.txt -size 200 200 -output ${OUT_DIR}scene1_06.bmp -depth 3 7 ${OUT_DIR}depth1_06.bmp
-${BIN} -input scene1_07.txt -size 200 200 -output ${OUT_DIR}scene1_07.bmp -depth -2 2 ${OUT_DIR}depth1_07.bmp
-${BIN} -input scene1_08.txt -size 200 200 -output ${OUT_DIR}scene1_08.bmp -depth 0 10 ${OUT_DIR}depth1_08.bmp
+${BIN} -input scene1_01.txt -size 200 200 -depth 9 10 ${OUT_DIR}scene1_01_depth.tga
+${BIN} -input scene1_02.txt -size 200 200 -depth 8 12 ${OUT_DIR}scene1_02_depth.tga
+${BIN} -input scene1_03.txt -size 200 200 -depth 8 12 ${OUT_DIR}scene1_03_depth.tga
+${BIN} -input scene1_04.txt -size 200 200 -depth 12 17 ${OUT_DIR}scene1_04_depth.tga
+${BIN} -input scene1_05.txt -size 200 200 -depth 14.5 19.5 ${OUT_DIR}scene1_05_depth.tga
+${BIN} -input scene1_06.txt -size 200 200 -depth 3 7 ${OUT_DIR}scene1_06_depth.tga
+${BIN} -input scene1_07.txt -size 200 200 -depth -2 2 ${OUT_DIR}scene1_07_depth.tga
+${BIN} -input scene1_08.txt -size 200 200 -depth 0 10 ${OUT_DIR}scene1_08_depth.tga
+${BIN} -input scene2_04_perspective.txt -size 200 200 -depth 8 12 ${OUT_DIR}scene2_04_perspective_depth.tga
+${BIN} -input test_plane_1.txt -size 200 200 -depth 0 10 ${OUT_DIR}test_plane_1_depth.tga
+${BIN} -input scene2_05_inside_sphere.txt -size 200 200 -depth 9 11 ${OUT_DIR}scene2_05_depth.tga -shade_back
+${BIN} -input scene2_06_plane.txt -size 200 200 -depth 8 20 ${OUT_DIR}scene2_06_depth.tga
+${BIN} -input scene2_07_sphere_triangles.txt -size 200 200 -depth 9 11 ${OUT_DIR}scene2_07_depth.tga -shade_back
 
-${BIN} -input scene2_04_perspective.txt -size 200 200 -output ${OUT_DIR}scene2_04_perspective.bmp -depth 8 12 ${OUT_DIR}depth2_04_perspective.bmp
-
-${BIN} -input test_plane_1.txt -size 200 200 -output ${OUT_DIR}test_plane_1.bmp -depth 0 10 ${OUT_DIR}depth_plane_1.bmp
-
-echo "=== Renderinput files with reflection bounces ==="
-${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_0.bmp -bounces 0
-${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_1.bmp -bounces 1
-${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_2.bmp -bounces 2
-${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_3.bmp -bounces 3
+echo "=== Render input files with reflection bounces ==="
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_0.tga -bounces 0
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_1.tga -bounces 1
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_2.tga -bounces 2
+${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_3.tga -bounces 3
 
 # High Res Examples
-# ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.bmp
-# ${BIN} -input scene_reflective_shininess_variations.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_shininess_variations.bmp
+# ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.tga
+# ${BIN} -input scene_reflective_shininess_variations.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_shininess_variations.tga
 
 echo "=== Move back out of '${IN_DIR}' ==="
 cd ..
