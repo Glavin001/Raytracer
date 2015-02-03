@@ -59,10 +59,10 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
         Vector3f p = ray.pointAtParameter(hit.getT());
 
         bool isBack = Vector3f::dot(normal, ray.getDirection()) > 0;
-        if (!m_shade_back && isBack)
+        if (m_shade_back && isBack)
         {
-            // Return Black color
-            return Vector3f(0,0,0);
+            // std::cout << "Back face: " << Vector3f::dot(normal, ray.getDirection()) << endl;
+            normal *= -1; // Flip normal
         }
 
         // Diffuse and Specular light
@@ -79,7 +79,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
 
             Hit rhit = Hit( FLT_MAX, NULL, Vector3f( 0, 0, 0 ) );
             Ray rray = Ray(p, dirToLight);
-            // if (!group->intersect(rray, rhit, EPSILON)) {
 
             // Shadows
             if (!(m_shadows && group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {

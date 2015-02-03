@@ -2,6 +2,7 @@
 CC = g++
 
 SRCDIR = src/
+OUTDIR = out/
 BUILDDIR = bin/
 TESTDIR = test/
 
@@ -38,6 +39,9 @@ clean-bin:
 
 clean-misc:
 	rm -f *.bak core.*
+
+clean-render:
+	rm -f ${OUTDIR}*.bmp ${OUTDIR}*.tga
 
 clean: clean-src clean-test clean-misc clean-bin
 
