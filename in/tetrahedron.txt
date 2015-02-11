@@ -1,0 +1,44 @@
+
+PerspectiveCamera {
+    center 0 10 0 
+    direction 0 -1 0  
+    up 0.86 0 -1
+    angle 8
+}
+
+Background { color 0 0 0 }
+
+Materials {
+    numMaterials 1
+    PhongMaterial {
+        diffuseColor 1 0 0
+    }
+}
+
+Group {
+    numObjects 4
+    MaterialIndex 0
+    Triangle {
+        vertex0 0 0.866025404 0
+        vertex1 -0.5 0 0.288675135
+        vertex2 0.5 0 0.288675135
+    }
+    MaterialIndex 0
+    Triangle {
+        vertex0 0 0.866025404 0
+        vertex1 0.5 0 0.288675135
+        vertex2 0 0 -0.577350269
+    }
+    MaterialIndex 0
+    Triangle {
+        vertex0 0 0.866025404 0
+        vertex1 0 0 -0.577350269
+        vertex2 -0.5 0 0.288675135
+    }
+    MaterialIndex 0
+    Triangle {
+        vertex0 -0.5 0 0.288675135
+        vertex1 0.5 0 0.288675135
+        vertex2 0 0 -0.577350269
+    }
+}
