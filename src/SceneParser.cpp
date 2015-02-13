@@ -208,7 +208,8 @@ Light* SceneParser::parseDirectionalLight() {
 Light* SceneParser::parsePointLight() {
     char token[MAX_PARSER_TOKEN_LENGTH];
     Vector3f position,color;
-    float falloff =0;
+    float falloff = 0;
+    Vector3f attenuation;
     getToken(token); assert (!strcmp(token, "{"));
     while (1) {
         getToken(token);
@@ -218,7 +219,12 @@ Light* SceneParser::parsePointLight() {
           color = readVector3f();
         }else if(strcmp(token,"falloff")==0){
           falloff = readFloat();
+        }else if(strcmp(token,"attenuation")==0){
+            attenuation = readVector3f();
+            std::cout << "WARNING: `attenuation` is still not fully supported"
+                         " for Point Light." << endl;
         }else{
+            std::cout << "token: " << token << endl;
            assert (!strcmp(token, "}"));
           break;
         }
@@ -271,7 +277,14 @@ Material* SceneParser::parseMaterial() {
         }
 		else if (strcmp(token, "shininess")==0) {
             shininess = readFloat();
-        }else if(strcmp(token, "refractionIndex")==0){
+        }
+        else if (strcmp(token, "exponent")==0) {
+            shininess = readFloat();
+        }
+        else if(strcmp(token, "refractionIndex")==0){
+            refractionIndex = readFloat();
+        }
+        else if(strcmp(token, "indexOfRefraction")==0){
 			refractionIndex = readFloat();
 		}
 		else if (strcmp(token, "texture")==0) {
@@ -290,9 +303,8 @@ Material* SceneParser::parseMaterial() {
         else if(strcmp(token,"reflectiveColor")==0){
             reflectiveColor = readVector3f();
         }
-
 		else {
-            // std::cout << "Token: " << token << endl;
+            std::cout << "Token: " << token << endl;
             assert (!strcmp(token, "}"));
             break;
         }
