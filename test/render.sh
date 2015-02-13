@@ -3,6 +3,8 @@ OUT_DIR=../out/ # Relative from within $IN_DIR
 EXT="bmp" # or "tga"
 BIN=../bin/raytracer.o # Relative from within $IN_DIR
 
+date1=$(date +"%s")
+
 echo "=== Cleaning ==="
 make clean
 
@@ -13,6 +15,9 @@ echo "=== Move into '${IN_DIR}' ==="
 cd ${IN_DIR}
 
 echo "=== Render all input files ==="
+
+OMP_NUM_THREADS=8
+
 IN_FILES=*.txt
 for f in $IN_FILES
 do
@@ -66,3 +71,7 @@ ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_
 
 echo "=== Move back out of '${IN_DIR}' ==="
 cd ..
+
+date2=$(date +"%s")
+diff=$(($date2-$date1))
+echo "$(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."

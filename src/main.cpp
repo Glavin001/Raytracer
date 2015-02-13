@@ -11,6 +11,8 @@
 #include "Camera.h"
 #include <string.h>
 #include <map>
+#include <thread>
+#include <omp.h>
 
 using namespace std;
 
@@ -76,7 +78,7 @@ int main( int argc, char* argv[] )
     char *depthFile = args.depth_file;
     char *normalsFile = args.normals_file;
 
-    std::cout << "# of Objects in Group: " << (int) group->getGroupSize() << endl;
+    //std::cout << "# of Objects in Group: " << (int) group->getGroupSize() << endl;
 
     // Then loop over each pixel in the image, shooting a ray
     // through that pixel and finding its intersection with
@@ -86,10 +88,18 @@ int main( int argc, char* argv[] )
     Image depthImage ( args.width, args.height );
     Image normalsImage ( args.width, args.height );
 
+    // unsigned int n = std::thread::hardware_concurrency();
+    // std::cout << n << " concurrent threads are supported.\n";
+
     float tmin = camera->getTMin();
-    for (int x = 0; x < args.width; x++)
+    int x, y = 0;
+
+    #pragma omp parallel for private(y) shared(image, depthImage, normalsImage, camera, raytracer)
+    for (x = 0; x < args.width; x++)
     {
-        for (int y = 0; y < args.height; y++) {
+        // std::cout<<"Threads: "<<omp_get_num_threads() <<"."<<endl;
+
+        for (y = 0; y < args.height; y++) {
 
             // std::cout << "p = ("<< x << ", " << y << ")" << endl;
 

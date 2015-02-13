@@ -224,7 +224,7 @@ Light* SceneParser::parsePointLight() {
             std::cout << "WARNING: `attenuation` is still not fully supported"
                          " for Point Light." << endl;
         }else{
-            std::cout << "token: " << token << endl;
+            // std::cout << "token: " << token << endl;
            assert (!strcmp(token, "}"));
           break;
         }
@@ -304,7 +304,7 @@ Material* SceneParser::parseMaterial() {
             reflectiveColor = readVector3f();
         }
 		else {
-            std::cout << "Token: " << token << endl;
+            // std::cout << "Token: " << token << endl;
             assert (!strcmp(token, "}"));
             break;
         }
