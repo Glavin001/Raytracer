@@ -32,13 +32,33 @@ After compiling (see above):
 make test
 ```
 
-### Rendering Sample Images
+### Rendering Sample Scenes
 
 ```bash
 make render
 ```
 
 Then look into the `out/` for all of the rendered images.
+
+#### Render Specific Scene
+
+You can use `render-file` to and `INPUT={filename pattern}` to
+render only certain files at a time.
+
+##### Examples
+
+Omit the extension and it will still match the pattern without extension `.txt`:
+
+```bash
+make render-file INPUT=test_colored_reflective_sphere_shadows_2
+```
+
+To render a single file, use full filename and
+force the pattern to only match one:
+
+```bash
+make render-file INPUT=test_bunny_1k.txt
+```
 
 ## Documentation
 

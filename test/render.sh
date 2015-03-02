@@ -1,3 +1,5 @@
+#!/bin/bash
+
 IN_DIR=in/
 OUT_DIR=../out/ # Relative from within $IN_DIR
 EXT="bmp" # or "tga"
@@ -14,8 +16,45 @@ make
 echo "=== Move into '${IN_DIR}' ==="
 cd ${IN_DIR}
 
-echo "=== Render all input files ==="
+# Default to all input files
 IN_FILES=*.txt
+
+# Check 1 argument is given #
+if [ $# -eq 1 ]
+then
+        echo "Render file $1"
+        IN_FILES=$1
+fi
+
+# case "$1" in
+#         all) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         obj) echo "IN_FILES : .obj input files"
+#             IN_FILES=()
+#             IN_FILES+=('scene01_plane.txt')
+#             IN_FILES+=('scene02_cube.txt')
+#             IN_FILES+=('scene05_bunny_200.txt')
+#             IN_FILES+=('scene06_bunny_1k.txt')
+#                ;;
+#         diffuse) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         specular) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         specular) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         reflection) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#               ;;
+#         refraction) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#               ;;
+# esac
+
+echo "=== Render input files ==="
 for f in $IN_FILES
 do
     filename=$(basename ${f})
