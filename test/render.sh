@@ -61,17 +61,22 @@ do
     echo "===== Processing scene file '$filename'... ====="
     filenameNoExt=${filename%%.*}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_no_back.${EXT} -normals ${OUT_DIR}${filenameNoExt}_normals.${EXT}"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-no_back.${EXT} -normals ${OUT_DIR}${filenameNoExt}_normals.${EXT}"
     echo ${cmd}
     # Execute command
     ${cmd}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shadows.${EXT} -shadows"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shadows.${EXT} -shadows"
     echo ${cmd}
     # Execute command
     ${cmd}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shade_back.${EXT} -shade_back"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shade_back.${EXT} -shade_back"
+    echo ${cmd}
+    # Execute command
+    ${cmd}
+
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shadows_shade_back.${EXT} -shade_back -shadows -bounces 5"
     echo ${cmd}
     # Execute command
     ${cmd}
@@ -100,6 +105,14 @@ ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_
 ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_1.${EXT} -bounces 1
 ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_2.${EXT} -bounces 2
 ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_3.${EXT} -bounces 3
+
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_0.${EXT} -bounces 0 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_1.${EXT} -bounces 1 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_2.${EXT} -bounces 2 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_3.${EXT} -bounces 3 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_4.${EXT} -bounces 4 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_5.${EXT} -bounces 5 -shade_back -shadows
+
 
 # High Res Examples
 # ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.${EXT}

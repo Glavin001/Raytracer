@@ -57,6 +57,10 @@ Vector3f Material::getReflectiveColor() {
 	return reflectiveColor;
 }
 
+Vector3f Material::getTransparentColor() {
+	return transparentColor;
+}
+
 float Material::getShininess() {
 	return shininess;
 }
@@ -68,4 +72,8 @@ void Material::setNoise(const Noise & n)
 void Material::setReflectiveColor(const Vector3f& c)
 {
 	reflectiveColor = c;
+}
+void Material::setTransparentColor(const Vector3f& c)
+{
+	transparentColor = c;
 }

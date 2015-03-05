@@ -224,7 +224,7 @@ Light* SceneParser::parsePointLight() {
             std::cout << "WARNING: `attenuation` is still not fully supported"
                          " for Point Light." << endl;
         }else{
-            std::cout << "token: " << token << endl;
+            // std::cout << "token: " << token << endl;
            assert (!strcmp(token, "}"));
           break;
         }
@@ -267,6 +267,7 @@ Material* SceneParser::parseMaterial() {
     getToken(token); assert (!strcmp(token, "{"));
 	Noise *noise =0;
     Vector3f reflectiveColor;
+    Vector3f transparentColor;
     while (1) {
         getToken(token);
         if (strcmp(token, "diffuseColor")==0) {
@@ -298,13 +299,13 @@ Material* SceneParser::parseMaterial() {
 			noise = parseNoise();
 		}
         else if(strcmp(token,"transparentColor")==0){
-            Vector3f transparentColor = readVector3f();
+            transparentColor = readVector3f();
         }
         else if(strcmp(token,"reflectiveColor")==0){
             reflectiveColor = readVector3f();
         }
 		else {
-            std::cout << "Token: " << token << endl;
+            // std::cout << "Token: " << token << endl;
             assert (!strcmp(token, "}"));
             break;
         }
@@ -319,6 +320,10 @@ Material* SceneParser::parseMaterial() {
 	}
     if (reflectiveColor != Vector3f(0,0,0)) {
         answer->setReflectiveColor(reflectiveColor);
+    }
+
+    if (transparentColor != Vector3f(0,0,0)) {
+        answer->setTransparentColor(transparentColor);
     }
     return answer;
 }

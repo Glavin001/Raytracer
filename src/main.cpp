@@ -100,7 +100,7 @@ int main( int argc, char* argv[] )
 
             Hit hit = Hit();
             // bool doesIntersect = group->intersect(ray, hit, tmin);
-            Vector3f pixelColor = raytracer.traceRay(ray, tmin, 0, 0.0f, hit);
+            Vector3f pixelColor = raytracer.traceRay(ray, tmin, 0, 1.0f, hit);
 
             float t = hit.getT();
 

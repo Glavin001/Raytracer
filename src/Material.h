@@ -31,9 +31,11 @@ public:
 	Vector3f getDiffuseColor();
 	Vector3f getSpecularColor();
 	Vector3f getReflectiveColor();
+	Vector3f getTransparentColor();
 
 	void setNoise(const Noise & n);
 	void setReflectiveColor(const Vector3f& c);
+	void setTransparentColor(const Vector3f& c);
 
 protected:
   Vector3f diffuseColor;
@@ -41,6 +43,7 @@ protected:
   float shininess;
   Vector3f specularColor;
   Vector3f reflectiveColor;
+  Vector3f transparentColor;
   Texture t;
   Noise noise;
 };
