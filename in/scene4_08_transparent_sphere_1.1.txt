@@ -43,11 +43,11 @@ Materials {
 
     PhongMaterial {
         diffuseColor 0.1 0.1 0.1
-	specularColor 1 1 1
-	exponent 100
-	transparentColor 0.7 0.7 0.7
-	reflectiveColor 0.3 0.3 0.3
-	indexOfRefraction 1.1
+    	specularColor 1 1 1
+    	exponent 100
+    	transparentColor 0.7 0.7 0.7
+    	reflectiveColor 0.3 0.3 0.3
+    	indexOfRefraction 1.1
     }
 }
 

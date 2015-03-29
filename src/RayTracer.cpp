@@ -145,16 +145,17 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
         // Reflection / Refraction
         if (bounces < m_maxBounces) {
 
+            float rn = refr_index;
             float rnt = material->getRefractionIndex();
             Vector3f dirFromMirror = mirrorDirection(normal, rayDir);
 
             // If point is on a dieletric
-            if (rnt > 0.0)
+            if (rn > 0.0)
             {
                 // std::cout << "=== Dielectric ===" <<endl;
-                // std::cout << "rn: " << rn <<endl;
+                // std::cout << "rn:  " << rn <<endl;
+                // std::cout << "rnt: " << rnt <<endl;
 
-                float rn = refr_index;
                 float c;
                 Vector3f k;
                 Vector3f dirOfRefraction;
@@ -177,22 +178,25 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
 
                     // compute attenuation
                     // apply Beer's law
-                    Vector3f absorbance = material->getTransparentColor() * 0.15f * -hit.getT();
+                    float attenuation = 0.15f;
+                    Vector3f absorbance = attenuation * -hit.getT();// * material->getTransparentColor();
                     k = Vector3f( expf( absorbance.x() ), expf( absorbance.y() ), expf( absorbance.z() ) );
 
                     // compute t
-                    bool doesRefract = transmittedDirection(-normal, rayDir, rn, rnt, dirOfRefraction);
+                    bool doesRefract = transmittedDirection(-normal, rayDir, rnt, rn, dirOfRefraction);
 
                     if (doesRefract)
                     {
                         c = Vector3f::dot(dirOfRefraction, normal);
-                    } else
+                    }
+                    else
                     {
                         // std::cout << "Specular reflection only" << endl;
                         // Specular Reflection
                         Ray mray = Ray(p, dirFromMirror);
                         Hit mhit = Hit();
-                        color += material->getReflectiveColor() * traceRay(mray, EPSILON, bounces+1, rnt, mhit);
+                        color += k * material->getReflectiveColor() *
+                            traceRay(mray, EPSILON, bounces+1, rn, mhit);
                         return color;
                     }
                 }
@@ -200,9 +204,9 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
                 // compute R0, R
                 float R0 = pow(
                     (
-                        (rnt - 1)
+                        (rn - 1)
                         /
-                        (rnt + 1)
+                        (rn + 1)
                     ), 2);
                 float R = (R0 + (1-R0)*pow((1-c), 5));
 
@@ -223,22 +227,13 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
 
                 color += 1.0f * (
                     material->getReflectiveColor() *
-                    R * traceRay(reflectRay, EPSILON, bounces+1, rnt, mhit1)
+                    R * traceRay(reflectRay, EPSILON, bounces+1, rn, mhit1)
                     +
-                    material->getTransparentColor() *
-                    (1-R) * traceRay(refractRay, EPSILON, bounces+1, rnt, mhit2)
+                    k * material->getTransparentColor() *
+                    (1-R) * traceRay(refractRay, EPSILON, bounces+1, rn, mhit2)
                 );
 
-                // color += (
-                //     material->getReflectiveColor() *
-                //     R * traceRay(reflectRay, EPSILON, ++bounces, rn, mhit1)
-                // ) + (
-                //     a *
-                //     (1-R) * traceRay(refractRay, EPSILON, ++bounces, rn, mhit2)
-                // );
-
-            }
-            else {
+            } else {
                 // No refraction
                 // Apply only reflection, if any
                 // std::cout << "=== Not Dielectric ===" << endl;
@@ -246,7 +241,7 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
                 // Specular Reflection
                 Ray mray = Ray(p, dirFromMirror);
                 Hit mhit = Hit();
-                color += material->getReflectiveColor() * traceRay(mray, EPSILON, bounces+1, rnt, mhit);
+                color += material->getReflectiveColor() * traceRay(mray, EPSILON, bounces+1, rn, mhit);
 
             }
 
