@@ -250,6 +250,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
 
         return color;
     } else {
-        return m_scene->getBackgroundColor(Vector3f( 0, 0, 0 ));
+        return m_scene->getBackgroundColor(ray.getDirection());
     }
 }
