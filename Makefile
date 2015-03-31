@@ -59,8 +59,8 @@ run: $(PROG)
 render: $(PROG)
 	${TESTDIR}render.sh
 
-render-file: $(PROG)
-	${TESTDIR}render.sh ${INPUT}
+render-files: $(PROG)
+	${TESTDIR}render.sh ${PATTERN}
 
 docs: FORCE
 	doxygen

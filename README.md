@@ -40,25 +40,26 @@ make render
 
 Then look into the `out/` for all of the rendered images.
 
-#### Render Specific Scene
+#### Render Specific Input Scenes
 
-You can use `render-file` to and `INPUT={filename pattern}` to
+You can use `render-files` to and `PATTERN={filename pattern}` to
 render only certain files at a time.
 
 ##### Examples
-
-Omit the extension and it will still match the pattern without extension `.txt`:
-
-```bash
-make render-file INPUT=test_colored_reflective_sphere_shadows_2
-```
 
 To render a single file, use full filename and
 force the pattern to only match one:
 
 ```bash
-make render-file INPUT=test_bunny_1k.txt
+make render-files PATTERN=test_bunny_1k.txt
 ```
+
+You can use [Globbing / patterns](http://tldp.org/LDP/abs/html/globbingref.html) to select input files:
+
+```bash
+make render-files PATTERN=test_colored_reflective_sphere_shadows_2*
+```
+
 
 ## Documentation
 
