@@ -123,7 +123,7 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             if (!(m_shadows && group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
 
                 // Diffuse
-                Vector3f diffuseColor = material->getDiffuseColor() * lightColor * fmax(0, Vector3f::dot(shadeNormal, dirToLight));
+                Vector3f diffuseColor = material->Shade(ray, hit, dirToLight, lightColor);
                 color += diffuseColor;
                 // Specular / Phong
                 Vector3f h = (dirToLight.normalized() + -1*rayDir.normalized()).normalized();
