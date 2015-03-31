@@ -17,7 +17,7 @@ public:
 
     virtual ~Material();
 
-    virtual Vector3f getDiffuseColor() const ;
+    // virtual Vector3f getDiffuseColor() const ;
 
     Vector3f Shade( const Ray& ray, const Hit& hit,
             const Vector3f& dirToLight, const Vector3f& lightColor ) ;
@@ -26,12 +26,12 @@ public:
 
 	float clampedDot( const Vector3f& L , const Vector3f& N )const;
 	void loadTexture(const char * filename);
-	float getRefractionIndex();
-	float getShininess();
-	Vector3f getDiffuseColor();
-	Vector3f getSpecularColor();
-	Vector3f getReflectiveColor();
-	Vector3f getTransparentColor();
+	float getRefractionIndex() const;
+	float getShininess() const;
+	Vector3f getDiffuseColor() const;
+	Vector3f getSpecularColor() const;
+	Vector3f getReflectiveColor() const;
+	Vector3f getTransparentColor() const;
 
 	void setNoise(const Noise & n);
 	void setReflectiveColor(const Vector3f& c);

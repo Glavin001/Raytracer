@@ -83,11 +83,16 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
     // Hit hit = Hit();
     //
     Group *group = (Group *) m_scene->getGroup();
+    bool doesIntersect = false;    
+    doesIntersect = group->intersect(ray, hit, tmin);
     //
-    if (group->intersect(ray, hit, tmin))
+    if (doesIntersect)
     {
+
         // Ambient light
         Material* material = hit.getMaterial();
+        // std::cout << "m" << &material << endl;
+
         Vector3f color = material->getDiffuseColor() * m_scene->getAmbientLight();
         Vector3f normal = hit.getNormal().normalized();
         Vector3f p = ray.pointAtParameter(hit.getT());
@@ -246,7 +251,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             }
 
         }
-
 
         return color;
     } else {

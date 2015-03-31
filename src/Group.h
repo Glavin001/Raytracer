@@ -33,10 +33,23 @@ public:
     }
 
     virtual bool intersect( const Ray& r, Hit& h, float tmin ) {
+        /*
+           FIXME: There is a bug in Octree API.
+           It should be functional,
+           however instead it sets the variables
+           `arg` and `termFunc` on the global object
+           which is reused by each of the threads.
+           This causes obvious problems
+           and results in segfault 11 when
+           parallelization is enabled
+         */
         bool didInsersect = false;
-        for (int i = 0; i < numObjects; i++) {
-            if (objects[i]->intersect(r, h, tmin)) {
-                didInsersect = true;
+        #pragma omp critical
+        {
+            for (int i = 0; i < numObjects; i++) {
+                if (objects[i]->intersect(r, h, tmin)) {
+                    didInsersect = true;
+                }
             }
         }
         return didInsersect;

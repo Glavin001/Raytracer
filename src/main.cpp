@@ -88,29 +88,30 @@ int main( int argc, char* argv[] )
     Image depthImage ( args.width, args.height );
     Image normalsImage ( args.width, args.height );
 
-    // unsigned int n = std::thread::hardware_concurrency();
-    // std::cout << n << " concurrent threads are supported.\n";
+    unsigned int n = std::thread::hardware_concurrency();
+    std::cout << n << " concurrent threads are supported.\n";
 
     float tmin = camera->getTMin();
-    int x, y = 0;
 
-    #pragma omp parallel for private(y) shared(image, depthImage, normalsImage, camera, raytracer)
-    for (x = 0; x < args.width; x++)
+    #pragma omp parallel for
+    for (int x = 0; x < args.width; x++)
     {
         // std::cout<<"Threads: "<<omp_get_num_threads() <<"."<<endl;
 
-        for (y = 0; y < args.height; y++) {
+        for (int y = 0; y < args.height; y++) {
 
             // std::cout << "p = ("<< x << ", " << y << ")" << endl;
 
             Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
             Ray ray = camera->generateRay(point);
 
-            //std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
+            // std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
 
             Hit hit = Hit();
             // bool doesIntersect = group->intersect(ray, hit, tmin);
+            // std::cout <<"b"<<endl;
             Vector3f pixelColor = raytracer.traceRay(ray, tmin, 0, 1.0f, hit);
+            // std::cout <<"a"<<endl;
 
             float t = hit.getT();
 
@@ -140,6 +141,8 @@ int main( int argc, char* argv[] )
 
         }
     }
+
+    std::cout << "Done generating outputs!" << endl;
 
     // Save image to output file
     if (outputFile != NULL) {

@@ -27,9 +27,8 @@ Materials {
     numMaterials 1
     PhongMaterial {
         diffuseColor 0.79 0.66 0.44
-    specularColor 1 1 1
-    shininess 20
-
+        specularColor 1 1 1
+        shininess 20
     }
 }
 
