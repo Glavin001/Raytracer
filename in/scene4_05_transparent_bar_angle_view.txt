@@ -1,6 +1,6 @@
 PerspectiveCamera {
-    center 0 1.5 7
-    direction 0 -0.2 -1
+    center 3 3.5 5
+    direction -0.6 -0.7 -1
     up 0 1 0
     angle 45
 }
@@ -9,7 +9,7 @@ Lights {
     numLights 1
     DirectionalLight {
         direction 0. -1 -1
-	color 0.8 0.8 0.8
+    	color 0.8 0.8 0.8
     }
 }
 
@@ -39,7 +39,7 @@ Group {
     MaterialIndex 0
     Plane {
         normal 0 1 0
-	offset -1
+    	offset -1
     }
 
     MaterialIndex 1

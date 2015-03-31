@@ -267,6 +267,7 @@ Material* SceneParser::parseMaterial() {
     getToken(token); assert (!strcmp(token, "{"));
 	Noise *noise =0;
     Vector3f reflectiveColor;
+    Vector3f transparentColor;
     while (1) {
         getToken(token);
         if (strcmp(token, "diffuseColor")==0) {
@@ -298,7 +299,7 @@ Material* SceneParser::parseMaterial() {
 			noise = parseNoise();
 		}
         else if(strcmp(token,"transparentColor")==0){
-            Vector3f transparentColor = readVector3f();
+            transparentColor = readVector3f();
         }
         else if(strcmp(token,"reflectiveColor")==0){
             reflectiveColor = readVector3f();
@@ -319,6 +320,10 @@ Material* SceneParser::parseMaterial() {
 	}
     if (reflectiveColor != Vector3f(0,0,0)) {
         answer->setReflectiveColor(reflectiveColor);
+    }
+
+    if (transparentColor != Vector3f(0,0,0)) {
+        answer->setTransparentColor(transparentColor);
     }
     return answer;
 }

@@ -1,4 +1,3 @@
-
 # === C++ ===
 
 # Compiled Object files
@@ -34,5 +33,14 @@
 # === Project Specific ===
 *.bmp
 *.tga
-!in/*.obj
 docs/
+
+
+# === Remove large .obj inputs ===
+in/*.obj
+
+# === Keep small .obj inputs ===
+!in/bunny_1k.obj
+!in/bunny_200.obj
+!in/cube.obj
+!in/diamond.obj

@@ -1,9 +1,11 @@
+#!/bin/bash
+
 IN_DIR=in/
 OUT_DIR=../out/ # Relative from within $IN_DIR
 EXT="bmp" # or "tga"
 BIN=../bin/raytracer.o # Relative from within $IN_DIR
 
-date1=$(date +"%s")
+startDate=$(date +"%s")
 
 echo "=== Cleaning ==="
 make clean
@@ -18,24 +20,67 @@ echo "=== Render all input files ==="
 
 OMP_NUM_THREADS=8
 
+# Default to all input files
 IN_FILES=*.txt
+
+# Check 1 argument is given #
+if [ $# -eq 1 ]
+then
+        echo "Render file $1"
+        IN_FILES=$1
+fi
+
+# case "$1" in
+#         all) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         obj) echo "IN_FILES : .obj input files"
+#             IN_FILES=()
+#             IN_FILES+=('scene01_plane.txt')
+#             IN_FILES+=('scene02_cube.txt')
+#             IN_FILES+=('scene05_bunny_200.txt')
+#             IN_FILES+=('scene06_bunny_1k.txt')
+#                ;;
+#         diffuse) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         specular) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         specular) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#                ;;
+#         reflection) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#               ;;
+#         refraction) echo "IN_FILES : All input files"
+#             IN_FILES=*.txt
+#               ;;
+# esac
+
+echo "=== Render input files ==="
 for f in $IN_FILES
 do
     filename=$(basename ${f})
     echo "===== Processing scene file '$filename'... ====="
     filenameNoExt=${filename%%.*}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_no_back.${EXT} -normals ${OUT_DIR}${filenameNoExt}_normals.${EXT}"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-no_back.${EXT} -normals ${OUT_DIR}${filenameNoExt}_normals.${EXT}"
     echo ${cmd}
     # Execute command
     ${cmd}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shadows.${EXT} -shadows"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shadows.${EXT} -shadows"
     echo ${cmd}
     # Execute command
     ${cmd}
 
-    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}_shade_back.${EXT} -shade_back"
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shade_back.${EXT} -shade_back"
+    echo ${cmd}
+    # Execute command
+    ${cmd}
+
+    cmd="${BIN} -input ${filename} -size 200 200 -output ${OUT_DIR}${filenameNoExt}-shadows_shade_back.${EXT} -shade_back -shadows -bounces 5"
     echo ${cmd}
     # Execute command
     ${cmd}
@@ -65,6 +110,14 @@ ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_
 ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_2.${EXT} -bounces 2
 ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_reflective_sphere_bounces_3.${EXT} -bounces 3
 
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_0.${EXT} -bounces 0 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_1.${EXT} -bounces 1 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_2.${EXT} -bounces 2 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_3.${EXT} -bounces 3 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_4.${EXT} -bounces 4 -shade_back -shadows
+${BIN} -input scene4_06_transparent_bars.txt -size 200 200 -output ${OUT_DIR}scene4_06_transparent_bars-bounces_5.${EXT} -bounces 5 -shade_back -shadows
+
+
 # High Res Examples
 # ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.${EXT}
 # ${BIN} -input scene_reflective_shininess_variations.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_shininess_variations.${EXT}
@@ -72,6 +125,6 @@ ${BIN} -input scene_reflective_sphere.txt -size 200 200 -output ${OUT_DIR}scene_
 echo "=== Move back out of '${IN_DIR}' ==="
 cd ..
 
-date2=$(date +"%s")
-diff=$(($date2-$date1))
+endDate=$(date +"%s")
+diff=$(($endDate-$startDate))
 echo "$(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."

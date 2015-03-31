@@ -9,7 +9,7 @@ PerspectiveCamera {
 Lights {
     numLights 1
     DirectionalLight {
-        direction 0.5 -1 0 
+        direction 0.5 -1 0
         color 0.8 0.8 0.8
     }
 }
@@ -18,20 +18,16 @@ Materials {
     numMaterials 3
     PhongMaterial {
         diffuseColor 0.1 0.1 0.1
-	specularColor 1 1 1
-	exponent 50
-	transparentColor 0 0 0	
-	reflectiveColor 0.9 0.9 0.9
-	indexOfRefraction 1
+    	specularColor 1 1 1
+    	exponent 50
+    	reflectiveColor 0.9 0.9 0.9
     }
 
     PhongMaterial {
         diffuseColor 1 0.1 0.1
-	specularColor 1 1 1
-	exponent 50
-	transparentColor 0 0 0	
-	reflectiveColor 0.9 0.1 0.1
-	indexOfRefraction 1
+    	specularColor 1 1 1
+    	exponent 50
+    	reflectiveColor 0.9 0.1 0.1
     }
 
     PhongMaterial {
@@ -67,4 +63,3 @@ Group {
 
 
 }
-

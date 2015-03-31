@@ -9,19 +9,19 @@ Lights {
     numLights 2
     DirectionalLight {
         direction 0.3 -1 -0.3
-	color 0.6 0.6 0.6
+    	color 0.6 0.6 0.6
     }
 
     DirectionalLight {
-        direction -0.3 -1 -0.3 
-	color 0.3 0.3 0.3
+        direction -0.3 -1 -0.3
+    	color 0.3 0.3 0.3
     }
 
 }
 
 Background {
     color 1 1 1
-    ambientLight 0.1 0.1 0.1 
+    ambientLight 0.1 0.1 0.1
 }
 
 Materials {
@@ -33,23 +33,23 @@ Materials {
 
     PhongMaterial {
         diffuseColor 0.1 0.1 0.1
-	reflectiveColor 0.3 0.3 0.3
-	transparentColor 0.6 0.6 0.1
-	indexOfRefraction 1.1
+    	transparentColor 0.6 0.6 0.1
+    	reflectiveColor 0.3 0.3 0.3
+    	indexOfRefraction 1.1
     }
 
     PhongMaterial {
         diffuseColor 0.1 0.1 0.1
-	transparentColor 0.6 0.1 0.6
-	reflectiveColor 0.3 0.3 0.3
-	indexOfRefraction 1.1
+    	transparentColor 0.6 0.1 0.6
+    	reflectiveColor 0.3 0.3 0.3
+    	indexOfRefraction 1.1
     }
 
     PhongMaterial {
         diffuseColor 0.1 0.1 0.1
-	transparentColor 0.1 0.6 0.6
-	reflectiveColor 0.3 0.3 0.3
-	indexOfRefraction 1.1
+    	transparentColor 0.1 0.6 0.6
+    	reflectiveColor 0.3 0.3 0.3
+    	indexOfRefraction 1.1
     }
 
 }
@@ -60,18 +60,18 @@ Group {
     MaterialIndex 0
     Plane {
         normal 0 1 0
-	offset -6
+    	offset -6
     }
 
     Transform {
-        XRotate  90 
+        XRotate  90
         Group {
 	    numObjects 3
             MaterialIndex 1
             Transform {
-                ZRotate  60 
-                Translate  0 0 1 
-                Scale  2.2 0.5 0.35 
+                ZRotate  60
+                Translate  0 0 1
+                Scale  2.2 0.5 0.35
                 TriangleMesh {
                     obj_file cube.obj
             	}
@@ -79,9 +79,9 @@ Group {
 
             MaterialIndex 2
             Transform {
-                ZRotate  -60 
-                Translate  0 0 0 
-                Scale  2.2 0.5 0.35 
+                ZRotate  -60
+                Translate  0 0 0
+                Scale  2.2 0.5 0.35
                 TriangleMesh {
                     obj_file cube.obj
             	}
@@ -89,9 +89,9 @@ Group {
 
             MaterialIndex 3
             Transform {
-                ZRotate  180 
-                Translate  0 0 -1 
-            	Scale  2.2 0.5 0.35 
+                ZRotate  180
+                Translate  0 0 -1
+            	Scale  2.2 0.5 0.35
                 TriangleMesh {
                	    obj_file cube.obj
                 }
@@ -99,5 +99,3 @@ Group {
         }
     }
 }
-
-
