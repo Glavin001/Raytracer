@@ -94,7 +94,7 @@ int main( int argc, char* argv[] )
     float tmin = camera->getTMin();
     int x, y = 0;
 
-    #pragma omp parallel for private(y) shared(image, depthImage, normalsImage, camera, raytracer)
+    //#pragma omp parallel for private(y) shared(image, depthImage, normalsImage, camera, raytracer)
     for (x = 0; x < args.width; x++)
     {
         // std::cout<<"Threads: "<<omp_get_num_threads() <<"."<<endl;
