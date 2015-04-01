@@ -93,17 +93,6 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
         Vector3f p = ray.pointAtParameter(hit.getT());
         Vector3f rayDir = ray.getDirection();
 
-        // If normal.dot(rayDir) > 0 then
-        // they are facing the same direction
-        // and the surface is the back face
-        bool isBack = Vector3f::dot(normal, rayDir) > 0;
-        Vector3f shadeNormal = normal;
-        if (m_shade_back && isBack)
-        {
-            // std::cout << "Back face: " << Vector3f::dot(normal, rayDir) << endl;
-            shadeNormal *= -1; // Flip normal
-        }
-
         // Diffuse and Specular light
         // Check for lights
         int numLights = m_scene->getNumLights();
@@ -122,23 +111,10 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             // Shadows
             if (!(m_shadows && group->intersect(rray, rhit, EPSILON) && rhit.getT() < distanceToLight)) {
 
-                // Diffuse
-                Vector3f diffuseColor = material->Shade(ray, hit, dirToLight, lightColor);
-                color += diffuseColor;
-                // Specular / Phong
-                Vector3f h = (dirToLight.normalized() + -1*rayDir.normalized()).normalized();
-                Vector3f specularColor = material->getSpecularColor() * lightColor * pow(Vector3f::dot(shadeNormal, h), material->getShininess());
-                color += specularColor;
+                // Diffuse & Phong (Specular)
+                Vector3f shadeColor = material->Shade(ray, hit, dirToLight, lightColor, m_shade_back);
+                color += shadeColor;
 
-                // std::cout << "diffuseColor: (" << diffuseColor.x() << ", " << diffuseColor.y() << ", " << diffuseColor.z() << ")" << endl;
-                // std::cout << "specularColor:(" << specularColor.x() << ", " << specularColor.y() << ", " << specularColor.z() << ")" << endl;
-                // std::cout << "normal:(" << normal.x() << ", " << normal.y() << ", " << normal.z() << ")" << endl;
-                // std::cout << "dirToLight:(" << dirToLight.x() << ", " << dirToLight.y() << ", " << dirToLight.z() << ")" << endl;
-                // std::cout << "rayDir:(" << rayDir.x() << ", " << rayDir.y() << ", " << rayDir.z() << ")" << endl;
-                // std::cout << "h:(" << h.x() << ", " << h.y() << ", " << h.z() << ")" << endl;
-                // std::cout << "normal dot h: " << Vector3f::dot(normal, h) << endl;
-                //
-                // std::cout << "color1: (" << color.x() << ", " << color.y() << ", " << color.z() << ")" << endl << endl;
             }
         }
 

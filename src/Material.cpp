@@ -15,22 +15,42 @@ Vector3f Material::getDiffuseColor() const
 }
 
 Vector3f Material::Shade( const Ray& ray, const Hit& hit,
-                          const Vector3f& dirToLight, const Vector3f& lightColor ) {
+                          const Vector3f& dirToLight, const Vector3f& lightColor,
+                          const bool shadeBack ) {
+
     Vector3f kd;
-    // std::cout << "Shade: " << (t.valid() ? "1" : "0") << (hit.hasTex ? "1" : "0") << endl;
-    if(t.valid() && hit.hasTex) {
+    if (t.valid() && hit.hasTex) {
         Vector2f texCoord = hit.texCoord;
         Vector3f texColor = t(texCoord[0],texCoord[1]);
         kd = texColor;
-    }else{
+    } else {
         kd = this->diffuseColor;
     }
     Vector3f n = hit.getNormal().normalized();
+
+    Vector3f rayDir = ray.getDirection();
+
+    // If normal.dot(rayDir) > 0 then
+    // they are facing the same direction
+    // and the surface is the back face
+    bool isBack = Vector3f::dot(n, rayDir) > 0;
+    if (shadeBack && isBack)
+    {
+        // std::cout << "Back face: " << Vector3f::dot(normal, rayDir) << endl;
+        n *= -1; // Flip normal
+    }
+
     //Diffuse Shading
-    if(noise.valid()) {
-        kd = noise.getColor(ray.getOrigin()+ray.getDirection()*hit.getT());
+    if (noise.valid()) {
+        kd = noise.getColor(ray.getOrigin()+rayDir*hit.getT());
     }
     Vector3f color = clampedDot( dirToLight,n )*pointwiseDot( lightColor, kd);
+
+    // Specular / Phong
+    Vector3f h = (dirToLight.normalized() + -1*rayDir.normalized()).normalized();
+    Vector3f specularColor = this->specularColor * lightColor * pow(Vector3f::dot(n, h), this->shininess);
+    color += specularColor;
+
     return color;
 }
 
