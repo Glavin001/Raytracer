@@ -17,6 +17,7 @@ Vector3f Material::getDiffuseColor() const
 Vector3f Material::Shade( const Ray& ray, const Hit& hit,
                           const Vector3f& dirToLight, const Vector3f& lightColor ) {
     Vector3f kd;
+    // std::cout << "Shade: " << (t.valid() ? "1" : "0") << (hit.hasTex ? "1" : "0") << endl;
     if(t.valid() && hit.hasTex) {
         Vector2f texCoord = hit.texCoord;
         Vector3f texColor = t(texCoord[0],texCoord[1]);
