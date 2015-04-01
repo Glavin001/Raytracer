@@ -61,10 +61,5 @@ render: $(PROG)
 
 clean-render: clean render
 
-render-files: $(PROG)
-	${TESTDIR}render.sh ${PATTERN}
-
-clean-render-files: clean render-files
-
 docs: FORCE
 	doxygen
