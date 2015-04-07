@@ -2,6 +2,10 @@
 
 > Raytracer for CSCI 4471 Computer Graphics class project
 
+## Author
+
+- [Glavin Wiechert](https://github.com/Glavin001)
+
 ## Compiling
 
 Build the executable in `bin/` directory.
@@ -94,12 +98,160 @@ make render SPECIAL=off
 
 ## Documentation
 
+### Source Code
+
 Using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
 
 ```bash
 make docs
 ```
 
-## Author
+### Features
 
-- Glavin Wiechert
+#### Starting Out (5)
+
+- [✓] **Basic classes, main function (5)**
+    - [✓] Material
+    - [✓] Hit
+    - [✓] Ray
+
+#### Electives (22)
+
+Your choice of additional features beyond the specific required ones.
+
+
+#### Primitives and Modeling (29 required)
+
+- [✓] **Object3D (4 marks)**
+
+Example Scene:
+Implementation Notes:
+
+- [✓] **Sphere (6)**
+
+- [✓] **Group (5)**
+
+- [✓] **Plane (2)**
+
+- [✓] **Triangle (2)**
+
+- [✓] **.obj file importer (2)**
+
+- [✓] **Transformations (8)**
+
+- [ ] Constructive Solid Geometry (10)
+
+- [ ] Additional Primitives (3 or more)
+
+- [ ] 3-D Iterated Function System (8)
+
+
+#### Light Simulation and Illumination (36)
+
+- [✓] **Diffuse shading (5)**
+
+- [✓] **Phong model (5)**
+
+- [✓] **Specular Reflection (10)**
+
+- [✓] **Basic Shadows (6)**
+
+- [✓] **Refraction (10)**
+
+- [ ] Soft Shadows (6)
+
+- [✓] Multiple light sources (4)
+
+- [ ] Spotlights (4)
+
+- [ ] Glossy reflections (7%)
+
+- [ ] Simple Fog (4)
+
+- [ ] Volumetric fog (8)
+
+- [ ] Photon Mapping (15)
+
+#### Camera and Lens Model (11)
+
+- [✓] **Camera (2)**
+
+- [✓] **Orthographic Camera (4)**
+
+- [✓] **Perspective Camera (5)**
+
+- [ ] Bloom (4)
+
+- [ ] Depth-of-field (8)
+
+- [ ] Fisheye appearance (2)
+
+- [ ] Oblique Cameras (2)
+
+- [ ] Other Non-Linear Cameras (4+)
+
+#### Debugging Tools (12)
+
+- [✓] **Depth Visualization (4)**
+
+- [✓] **Back face shading / no shading (4)**
+
+- [✓] **Normal Visualization (4)**
+
+- [ ] OpenGL Previsualization Tool (6)
+
+- [✓] Other Tools (2+)
+
+ I developed https://github.com/Glavin001/RayCapture for the purpose of assisting me with quicker debugging and generating sample input scenes.
+
+#### Textures (10)
+
+- [✓] **Simple Procedural (4)**
+
+- [✓] **Texture Mapping I (6)**
+
+- [ ] Texture Mapping II (up to 6)
+
+- [✓] Environment Mapping (5)
+> This could be sphere maps or cube maps.
+
+Raytracer has Cube Map support:
+
+- [ ] Additional texture model loading (4)
+
+- [ ] Bump mapping (6)
+
+#### Acceleration Techniques (0)
+
+- [ ] Adaptive Ray Depth (5)
+
+- [ ] Intersection Methods (4)
+
+- [ ] BSP tree (6)
+
+- [ ] Grid (6)
+
+- [ ] Adaptive bounding boxes or bounding spheres (6)
+
+- [✓] Octree (6)
+
+Raytracer has Octree support for Meshes loaded by .obj files.
+
+- [ ] Some other technique of your choice (6)
+
+#### Distributed Raytracing (0)
+
+- [ ] Antialiasing (3-5)
+
+- [ ] Adaptive Antialiasing (4)
+
+- [ ] Motion Blur (4)
+
+#### Software Engineering (0)
+
+- [✓] Source Code Control (4)
+
+Using Git and GitHub!
+
+- [ ] Parallelizing the Raytracer (5)
+
