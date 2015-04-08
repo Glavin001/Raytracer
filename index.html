@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Raytracer by Glavin001</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Raytracer</h1>
+      <h2 class="project-tagline">Raytracer for CSCI 4471 Computer Graphics class project</h2>
+      <a href="https://github.com/Glavin001/Raytracer" class="btn">View on GitHub</a>
+      <a href="https://github.com/Glavin001/Raytracer/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Glavin001/Raytracer/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="raytracer" class="anchor" href="#raytracer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Raytracer</h1>
+
+<blockquote>
+<p>Raytracer for CSCI 4471 Computer Graphics class project</p>
+</blockquote>
+
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<ul>
+<li><a href="https://github.com/Glavin001">Glavin Wiechert</a></li>
+</ul>
+
+<h2>
+<a id="compiling" class="anchor" href="#compiling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compiling</h2>
+
+<p>Build the executable in <code>bin/</code> directory.</p>
+
+<div class="highlight highlight-bash"><pre>make</pre></div>
+
+<h3>
+<a id="cleaning" class="anchor" href="#cleaning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cleaning</h3>
+
+<div class="highlight highlight-bash"><pre>make clean</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>After compiling (see above):</p>
+
+<div class="highlight highlight-bash"><pre>./bin/raytracer.o</pre></div>
+
+<h2>
+<a id="testing" class="anchor" href="#testing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<h3>
+<a id="unit-testing" class="anchor" href="#unit-testing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Unit Testing</h3>
+
+<div class="highlight highlight-bash"><pre>make <span class="pl-c1">test</span></pre></div>
+
+<h3>
+<a id="rendering-sample-scenes" class="anchor" href="#rendering-sample-scenes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rendering Sample Scenes</h3>
+
+<div class="highlight highlight-bash"><pre>make render</pre></div>
+
+<p>Then look into the <code>out/</code> for all of the rendered images.</p>
+
+<p>You can also copy and paste the commands that are printed out for each file render.</p>
+
+<p>For instance, you may see:</p>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c1">cd</span> <span class="pl-k">in</span>/ <span class="pl-k">;</span> ../bin/raytracer.o -input test_noise_1.txt -size 200 200 -bounces 4 -output ../out/test_noise_1-no_back.bmp -normals ../out/test_noise_1_normals.bmp <span class="pl-k">;</span> <span class="pl-c1">cd</span> ../</pre></div>
+
+<p>You can easily copy and paste this command to re-render
+this case for input <code>test_noise_1.txt</code> with those arguments.</p>
+
+<h4>
+<a id="rendering-arguments" class="anchor" href="#rendering-arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rendering Arguments</h4>
+
+<p>You can change the default arguments for <code>render</code> task.</p>
+
+<ul>
+<li>
+<code>PATTERN</code> - Defaults to <code>*.txt</code> - Globbing pattern to select input files from <code>in/</code> directory</li>
+<li>
+<code>SIZE</code> - Defaults to <code>200</code> - Size of rendered images</li>
+<li>
+<code>EXT</code> - Defaults to <code>bmp</code> (<code>bmp</code> or <code>tga</code> supported) - File extension of rendered images</li>
+<li>
+<code>BOUNCES</code> - Defaults to <code>4</code> - # of recursive bounces of a ray, used for reflections</li>
+<li>
+<code>SPECIALS</code> - Defaults to <code>on</code> (<code>on</code> or <code>off</code>) - Render special cases of the input files, such as with depth mapping</li>
+</ul>
+
+<h5>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h5>
+
+<p>To render a single file, use full filename and
+force the pattern to only match one:</p>
+
+<div class="highlight highlight-bash"><pre>make render PATTERN=test_bunny_1k.txt</pre></div>
+
+<p>You can use <a href="http://tldp.org/LDP/abs/html/globbingref.html">Globbing / patterns</a> to select input files:</p>
+
+<div class="highlight highlight-bash"><pre>make render PATTERN=test_colored_reflective_sphere_shadows_2<span class="pl-k">*</span></pre></div>
+
+<p>You can also change the rendered image size:</p>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c"># Render all images with output size of 1000</span>
+make render SIZE=1000
+<span class="pl-c"># Render specific pattern of images with output size of 1000</span>
+make render PATTERN=test_texture_mapping_sphere.txt SIZE=1000</pre></div>
+
+<p>You can also disable the special custom rendered images:</p>
+
+<div class="highlight highlight-bash"><pre>make render SPECIAL=off</pre></div>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<h3>
+<a id="source-code" class="anchor" href="#source-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Source Code</h3>
+
+<p>Using <a href="http://www.stack.nl/%7Edimitri/doxygen/">Doxygen</a>.</p>
+
+<div class="highlight highlight-bash"><pre>make docs</pre></div>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<h4>
+<a id="starting-out-5" class="anchor" href="#starting-out-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Starting Out (5)</h4>
+
+<ul>
+<li>[✓] <strong>Basic classes, main function (5)</strong>
+
+<ul>
+<li>[✓] Material</li>
+<li>[✓] Hit</li>
+<li>[✓] Ray</li>
+</ul>
+</li>
+</ul>
+
+<h4>
+<a id="electives-22" class="anchor" href="#electives-22" aria-hidden="true"><span class="octicon octicon-link"></span></a>Electives (22)</h4>
+
+<p>Your choice of additional features beyond the specific required ones.</p>
+
+<h4>
+<a id="primitives-and-modeling-29-required" class="anchor" href="#primitives-and-modeling-29-required" aria-hidden="true"><span class="octicon octicon-link"></span></a>Primitives and Modeling (29 required)</h4>
+
+<ul>
+<li>[✓] <strong>Object3D (4 marks)</strong>
+</li>
+</ul>
+
+<p>Example Scene:
+Implementation Notes:</p>
+
+<ul>
+<li><p>[✓] <strong>Sphere (6)</strong></p></li>
+<li><p>[✓] <strong>Group (5)</strong></p></li>
+<li><p>[✓] <strong>Plane (2)</strong></p></li>
+<li><p>[✓] <strong>Triangle (2)</strong></p></li>
+<li><p>[✓] <strong>.obj file importer (2)</strong></p></li>
+<li><p>[✓] <strong>Transformations (8)</strong></p></li>
+<li><p>[ ] Constructive Solid Geometry (10)</p></li>
+<li><p>[ ] Additional Primitives (3 or more)</p></li>
+<li><p>[ ] 3-D Iterated Function System (8)</p></li>
+</ul>
+
+<h4>
+<a id="light-simulation-and-illumination-36" class="anchor" href="#light-simulation-and-illumination-36" aria-hidden="true"><span class="octicon octicon-link"></span></a>Light Simulation and Illumination (36)</h4>
+
+<ul>
+<li><p>[✓] <strong>Diffuse shading (5)</strong></p></li>
+<li><p>[✓] <strong>Phong model (5)</strong></p></li>
+<li><p>[✓] <strong>Specular Reflection (10)</strong></p></li>
+<li><p>[✓] <strong>Basic Shadows (6)</strong></p></li>
+<li><p>[✓] <strong>Refraction (10)</strong></p></li>
+<li><p>[ ] Soft Shadows (6)</p></li>
+<li><p>[✓] Multiple light sources (4)</p></li>
+<li><p>[ ] Spotlights (4)</p></li>
+<li><p>[ ] Glossy reflections (7%)</p></li>
+<li><p>[ ] Simple Fog (4)</p></li>
+<li><p>[ ] Volumetric fog (8)</p></li>
+<li><p>[ ] Photon Mapping (15)</p></li>
+</ul>
+
+<h4>
+<a id="camera-and-lens-model-11" class="anchor" href="#camera-and-lens-model-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera and Lens Model (11)</h4>
+
+<ul>
+<li><p>[✓] <strong>Camera (2)</strong></p></li>
+<li><p>[✓] <strong>Orthographic Camera (4)</strong></p></li>
+<li><p>[✓] <strong>Perspective Camera (5)</strong></p></li>
+<li><p>[ ] Bloom (4)</p></li>
+<li><p>[ ] Depth-of-field (8)</p></li>
+<li><p>[ ] Fisheye appearance (2)</p></li>
+<li><p>[ ] Oblique Cameras (2)</p></li>
+<li><p>[ ] Other Non-Linear Cameras (4+)</p></li>
+</ul>
+
+<h4>
+<a id="debugging-tools-12" class="anchor" href="#debugging-tools-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debugging Tools (12)</h4>
+
+<ul>
+<li><p>[✓] <strong>Depth Visualization (4)</strong></p></li>
+<li><p>[✓] <strong>Back face shading / no shading (4)</strong></p></li>
+<li><p>[✓] <strong>Normal Visualization (4)</strong></p></li>
+<li><p>[ ] OpenGL Previsualization Tool (6)</p></li>
+<li>
+<p>[✓] Other Tools (2+)</p>
+
+<p>I developed <a href="https://github.com/Glavin001/RayCapture">https://github.com/Glavin001/RayCapture</a> for the purpose of assisting me with quicker debugging and generating sample input scenes.</p>
+</li>
+</ul>
+
+<h4>
+<a id="textures-10" class="anchor" href="#textures-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>Textures (10)</h4>
+
+<ul>
+<li><p>[✓] <strong>Simple Procedural (4)</strong></p></li>
+<li><p>[✓] <strong>Texture Mapping I (6)</strong></p></li>
+<li><p>[ ] Texture Mapping II (up to 6)</p></li>
+<li>
+<p>[✓] Environment Mapping (5)</p>
+
+<blockquote>
+<p>This could be sphere maps or cube maps.</p>
+</blockquote>
+</li>
+</ul>
+
+<p>Raytracer has Cube Map support:</p>
+
+<ul>
+<li><p>[ ] Additional texture model loading (4)</p></li>
+<li><p>[ ] Bump mapping (6)</p></li>
+</ul>
+
+<h4>
+<a id="acceleration-techniques-0" class="anchor" href="#acceleration-techniques-0" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acceleration Techniques (0)</h4>
+
+<ul>
+<li><p>[ ] Adaptive Ray Depth (5)</p></li>
+<li><p>[ ] Intersection Methods (4)</p></li>
+<li><p>[ ] BSP tree (6)</p></li>
+<li><p>[ ] Grid (6)</p></li>
+<li><p>[ ] Adaptive bounding boxes or bounding spheres (6)</p></li>
+<li><p>[✓] Octree (6)</p></li>
+</ul>
+
+<p>Raytracer has Octree support for Meshes loaded by .obj files.</p>
+
+<ul>
+<li>[ ] Some other technique of your choice (6)</li>
+</ul>
+
+<h4>
+<a id="distributed-raytracing-0" class="anchor" href="#distributed-raytracing-0" aria-hidden="true"><span class="octicon octicon-link"></span></a>Distributed Raytracing (0)</h4>
+
+<ul>
+<li><p>[ ] Antialiasing (3-5)</p></li>
+<li><p>[ ] Adaptive Antialiasing (4)</p></li>
+<li><p>[ ] Motion Blur (4)</p></li>
+</ul>
+
+<h4>
+<a id="software-engineering-0" class="anchor" href="#software-engineering-0" aria-hidden="true"><span class="octicon octicon-link"></span></a>Software Engineering (0)</h4>
+
+<ul>
+<li>[✓] Source Code Control (4)</li>
+</ul>
+
+<p>Using Git and GitHub!</p>
+
+<ul>
+<li>[ ] Parallelizing the Raytracer (5)</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Glavin001/Raytracer">Raytracer</a> is maintained by <a href="https://github.com/Glavin001">Glavin001</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
