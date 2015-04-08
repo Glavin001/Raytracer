@@ -38,7 +38,6 @@ Materials {
         diffuseColor 0.2 0.9 0.2
         specularColor 0.9 0.9 0.9
         refractionIndex 2
-        reflectiveColor 0.5 0.5 0.5
         Noise {
             color 0.1 0.2 0.3
             color 0.3 0.4 0.5
