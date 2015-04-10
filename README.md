@@ -144,27 +144,34 @@ Features marked with ✓ are implemented, while those without are not.
 
 - [✓] **Basic classes, main function (5 marks)**
     - [✓] Material
+    	- See [Material.h](src/Material.h) and [Material.cpp](src/Material.cpp)
     - [✓] Hit
+    	- See [Hit.h](src/Hit.h)
     - [✓] Ray
+    	- See [Ray.h](src/Ray.h)
 
 #### Primitives and Modeling (29 required marks)
 
 - [✓] **Object3D (4 marks)**
-
-Example Scene:
-Implementation Notes:
+	- See [Object3D.h](src/Object3D.h)
 
 - [✓] **Sphere (6 marks)**
-
+	- See [Sphere.h](src/Scene.h) and [Sphere.cpp](src/Scene.cpp)
+	
 - [✓] **Group (5 marks)**
+	- See [Group.h](src/Group.h)
 
 - [✓] **Plane (2 marks)**
+	- See [Plane.h](src/Plane.h)
 
 - [✓] **Triangle (2 marks)**
+	- See [Triangle.h](src/Triangle.h)
 
 - [✓] **.obj file importer (2 marks)**
+	- See [Mesh.hpp](src/Mesh.hpp) and [Mesh.cpp](src/Mesh.cpp)
 
 - [✓] **Transformations (8 marks)**
+	- See [Transform.h](src/Transform.h)
 
 - [ ] Constructive Solid Geometry (10 marks)
 
@@ -176,18 +183,24 @@ Implementation Notes:
 #### Light Simulation and Illumination (36 required marks)
 
 - [✓] **Diffuse shading (5 marks)**
+	- See [Material.cpp](src/Material.cpp)
 
 - [✓] **Phong model (5 marks)**
+	- See [Material.cpp](src/Material.cpp)
 
 - [✓] **Specular Reflection (10 marks)**
+	- See [RayTracer.cpp](src/RayTracer.cpp)
 
 - [✓] **Basic Shadows (6 marks)**
+	- See [RayTracer.cpp](src/RayTracer.cpp)
 
 - [✓] **Refraction (10 marks)**
+	- See [RayTracer.cpp](src/RayTracer.cpp)
 
 - [ ] Soft Shadows (6 marks)
 
 - [✓] Multiple light sources (4 marks)
+	- See [RayTracer.cpp](src/RayTracer.cpp)
 
 - [ ] Spotlights (4 marks)
 
@@ -202,10 +215,13 @@ Implementation Notes:
 #### Camera and Lens Model (11 required marks)
 
 - [✓] **Camera (2 marks)**
+	- See [Camera.h](src/Camera.h)
 
 - [✓] **Orthographic Camera (4 marks)**
+	- See [OrthographicCamera.h](src/OrthographicCamera.h)
 
 - [✓] **Perspective Camera (5 marks)**
+	- See [PerspectiveCamera.h](src/PerspectiveCamera.h)
 
 - [ ] Bloom (4 marks)
 
@@ -220,30 +236,36 @@ Implementation Notes:
 #### Debugging Tools (12 required marks)
 
 - [✓] **Depth Visualization (4 marks)**
+	- See [main.cpp](src/main.cpp)
 
 - [✓] **Back face shading / no shading (4 marks)**
+	- See [Material.cpp](src/Material.cpp)
 
 - [✓] **Normal Visualization (4 marks)**
+	- See [main.cpp](src/main.cpp)
 
 - [ ] OpenGL Previsualization Tool (6 marks)
 
 - [✓] Other Tools (2+ marks)
 
  - [✓] I developed [RayCapture](https://github.com/Glavin001/RayCapture) for the purpose of assisting me with quicker debugging and generating sample input scenes.
- - [✓] I have used Unit Tests to help me with my debugging. You can run `make test` to see the results. This has helped me in the initial development of this Raytracer for testing Camera's generateRay return values in comparison to the right values calculated "by hand".
+ - [✓] I have used Unit Testing to help me with my debugging. You can run `make test` to see the results. This has helped me in the initial development of this Raytracer for testing Camera's generateRay return values in comparison to the right values calculated "by hand". See [test/unit/](test/unit/) directory for source code of the unit tests.
 
 #### Textures (10 required marks)
 
 - [✓] **Simple Procedural (4 marks)**
+	- See [Noise.h](src/Noise.h) and [Noise.cpp](src/Noise.cpp) 
+	and [PerlinNoise.h](src/PerlinNoise.h) and [PerlinNoise.cpp](src/PerlinNoise.cpp)
 
 - [✓] **Texture Mapping I (6 marks)**
+	- See [texture.hpp](src/texture.hpp) and [texture.cpp](src/texture.cpp) and [Sphere.cpp](src/Sphere.cpp)
 
 - [ ] Texture Mapping II (up to 6 marks)
 
 - [✓] Environment Mapping (5 marks)
 > This could be sphere maps or cube maps.
-
-Raytracer has Cube Map support:
+	- [✓] Cube Map support
+  		- See [CubeMap.h](src/CubeMap.h) and [CubeMap.cpp](src/CubeMap.cpp)
 
 - [ ] Additional texture model loading (4 marks)
 
@@ -262,14 +284,16 @@ Raytracer has Cube Map support:
 - [ ] Adaptive bounding boxes or bounding spheres (6 marks)
 
 - [✓] Octree (6 marks)
-
-Raytracer has Octree support for Meshes loaded by .obj files.
+	- [✓] Raytracer has Octree support for Meshes loaded by .obj files
+		- See [octree.hpp](src/octree.hpp) and [octree.cpp](src/octree.cpp) and [Mesh.cpp](src/Mesh.cpp)
 
 - [ ] Some other technique of your choice (6 marks)
 
 #### Distributed Raytracing (0 required marks)
 
-- [ ] Antialiasing (3-5)
+- [✓] Antialiasing (5)
+	- [✓] Jittering method for antialiasing
+		- See [main.cpp](src/main.cpp)  
 
 - [ ] Adaptive Antialiasing (4 marks)
 
@@ -278,8 +302,7 @@ Raytracer has Octree support for Meshes loaded by .obj files.
 #### Software Engineering (0 required marks)
 
 - [✓] Source Code Control (4 marks)
-
-Using Git and GitHub!
+	- Using Git and GitHub!
 
 - [ ] Parallelizing the Raytracer (5 marks)
 
