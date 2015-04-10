@@ -2,6 +2,8 @@
 
 > Raytracer for CSCI 4471 Computer Graphics class project
 
+See section `Documentation -> Features` below for a complete feature list.
+
 ## Author
 
 - [Glavin Wiechert](https://github.com/Glavin001)
@@ -129,150 +131,155 @@ make docs
 
 ### Features
 
-#### Starting Out (5)
+Here is the complete feature list.
+**Bolded** list items are require features. 
+Features marked with ✓ are implemented, while those without are not.
 
-- [✓] **Basic classes, main function (5)**
+
+#### Electives (22 required marks)
+
+> Your choice of additional features beyond the specific required ones.
+
+#### Starting Out (5 required marks)
+
+- [✓] **Basic classes, main function (5 marks)**
     - [✓] Material
     - [✓] Hit
     - [✓] Ray
 
-#### Electives (22)
-
-Your choice of additional features beyond the specific required ones.
-
-
-#### Primitives and Modeling (29 required)
+#### Primitives and Modeling (29 required marks)
 
 - [✓] **Object3D (4 marks)**
 
 Example Scene:
 Implementation Notes:
 
-- [✓] **Sphere (6)**
+- [✓] **Sphere (6 marks)**
 
-- [✓] **Group (5)**
+- [✓] **Group (5 marks)**
 
-- [✓] **Plane (2)**
+- [✓] **Plane (2 marks)**
 
-- [✓] **Triangle (2)**
+- [✓] **Triangle (2 marks)**
 
-- [✓] **.obj file importer (2)**
+- [✓] **.obj file importer (2 marks)**
 
-- [✓] **Transformations (8)**
+- [✓] **Transformations (8 marks)**
 
-- [ ] Constructive Solid Geometry (10)
+- [ ] Constructive Solid Geometry (10 marks)
 
-- [ ] Additional Primitives (3 or more)
+- [ ] Additional Primitives (3 or more marks)
 
-- [ ] 3-D Iterated Function System (8)
+- [ ] 3-D Iterated Function System (8 marks)
 
 
-#### Light Simulation and Illumination (36)
+#### Light Simulation and Illumination (36 required marks)
 
-- [✓] **Diffuse shading (5)**
+- [✓] **Diffuse shading (5 marks)**
 
-- [✓] **Phong model (5)**
+- [✓] **Phong model (5 marks)**
 
-- [✓] **Specular Reflection (10)**
+- [✓] **Specular Reflection (10 marks)**
 
-- [✓] **Basic Shadows (6)**
+- [✓] **Basic Shadows (6 marks)**
 
-- [✓] **Refraction (10)**
+- [✓] **Refraction (10 marks)**
 
-- [ ] Soft Shadows (6)
+- [ ] Soft Shadows (6 marks)
 
-- [✓] Multiple light sources (4)
+- [✓] Multiple light sources (4 marks)
 
-- [ ] Spotlights (4)
+- [ ] Spotlights (4 marks)
 
-- [ ] Glossy reflections (7%)
+- [ ] Glossy reflections (7 marks)
 
-- [ ] Simple Fog (4)
+- [ ] Simple Fog (4 marks)
 
-- [ ] Volumetric fog (8)
+- [ ] Volumetric fog (8 marks)
 
-- [ ] Photon Mapping (15)
+- [ ] Photon Mapping (15 marks)
 
-#### Camera and Lens Model (11)
+#### Camera and Lens Model (11 required marks)
 
-- [✓] **Camera (2)**
+- [✓] **Camera (2 marks)**
 
-- [✓] **Orthographic Camera (4)**
+- [✓] **Orthographic Camera (4 marks)**
 
-- [✓] **Perspective Camera (5)**
+- [✓] **Perspective Camera (5 marks)**
 
-- [ ] Bloom (4)
+- [ ] Bloom (4 marks)
 
-- [ ] Depth-of-field (8)
+- [ ] Depth-of-field (8 marks)
 
-- [ ] Fisheye appearance (2)
+- [ ] Fisheye appearance (2 marks)
 
-- [ ] Oblique Cameras (2)
+- [ ] Oblique Cameras (2 marks)
 
-- [ ] Other Non-Linear Cameras (4+)
+- [ ] Other Non-Linear Cameras (4+ marks)
 
-#### Debugging Tools (12)
+#### Debugging Tools (12 required marks)
 
-- [✓] **Depth Visualization (4)**
+- [✓] **Depth Visualization (4 marks)**
 
-- [✓] **Back face shading / no shading (4)**
+- [✓] **Back face shading / no shading (4 marks)**
 
-- [✓] **Normal Visualization (4)**
+- [✓] **Normal Visualization (4 marks)**
 
-- [ ] OpenGL Previsualization Tool (6)
+- [ ] OpenGL Previsualization Tool (6 marks)
 
-- [✓] Other Tools (2+)
+- [✓] Other Tools (2+ marks)
 
- I developed https://github.com/Glavin001/RayCapture for the purpose of assisting me with quicker debugging and generating sample input scenes.
+ - [✓] I developed [RayCapture](https://github.com/Glavin001/RayCapture) for the purpose of assisting me with quicker debugging and generating sample input scenes.
+ - [✓] I have used Unit Tests to help me with my debugging. You can run `make test` to see the results. This has helped me in the initial development of this Raytracer for testing Camera's generateRay return values in comparison to the right values calculated "by hand".
 
-#### Textures (10)
+#### Textures (10 required marks)
 
-- [✓] **Simple Procedural (4)**
+- [✓] **Simple Procedural (4 marks)**
 
-- [✓] **Texture Mapping I (6)**
+- [✓] **Texture Mapping I (6 marks)**
 
-- [ ] Texture Mapping II (up to 6)
+- [ ] Texture Mapping II (up to 6 marks)
 
-- [✓] Environment Mapping (5)
+- [✓] Environment Mapping (5 marks)
 > This could be sphere maps or cube maps.
 
 Raytracer has Cube Map support:
 
-- [ ] Additional texture model loading (4)
+- [ ] Additional texture model loading (4 marks)
 
-- [ ] Bump mapping (6)
+- [ ] Bump mapping (6 marks)
 
-#### Acceleration Techniques (0)
+#### Acceleration Techniques (0 required marks)
 
-- [ ] Adaptive Ray Depth (5)
+- [ ] Adaptive Ray Depth (5 marks)
 
-- [ ] Intersection Methods (4)
+- [ ] Intersection Methods (4 marks)
 
-- [ ] BSP tree (6)
+- [ ] BSP tree (6 marks)
 
-- [ ] Grid (6)
+- [ ] Grid (6 marks)
 
-- [ ] Adaptive bounding boxes or bounding spheres (6)
+- [ ] Adaptive bounding boxes or bounding spheres (6 marks)
 
-- [✓] Octree (6)
+- [✓] Octree (6 marks)
 
 Raytracer has Octree support for Meshes loaded by .obj files.
 
-- [ ] Some other technique of your choice (6)
+- [ ] Some other technique of your choice (6 marks)
 
-#### Distributed Raytracing (0)
+#### Distributed Raytracing (0 required marks)
 
 - [ ] Antialiasing (3-5)
 
-- [ ] Adaptive Antialiasing (4)
+- [ ] Adaptive Antialiasing (4 marks)
 
-- [ ] Motion Blur (4)
+- [ ] Motion Blur (4 marks)
 
-#### Software Engineering (0)
+#### Software Engineering (0 required marks)
 
-- [✓] Source Code Control (4)
+- [✓] Source Code Control (4 marks)
 
 Using Git and GitHub!
 
-- [ ] Parallelizing the Raytracer (5)
+- [ ] Parallelizing the Raytracer (5 marks)
 
