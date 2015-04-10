@@ -117,6 +117,23 @@ make render PATTERN=test_texture_mapping_sphere.txt SIZE=1000</pre></div>
 
 <div class="highlight highlight-bash"><pre>make render SPECIAL=off</pre></div>
 
+<h3>
+<a id="convert-bmp-to-png-images" class="anchor" href="#convert-bmp-to-png-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Convert <code>.bmp</code> to <code>.png</code> images</h3>
+
+<p>First, install <code>imagemagick</code>:</p>
+
+<div class="highlight highlight-bash"><pre>brew install imagemagick</pre></div>
+
+<p>The following will convert the <code>.bmp</code> images to <code>.png</code> images and move them into the <code>img/</code> directory.</p>
+
+<div class="highlight highlight-bash"><pre>make convert-render</pre></div>
+
+<p>You should run this after you're satisfied with your <code>.bmp</code> renders.
+It will render all of the <code>.bmp</code> images it can find in <code>out/</code>, and will take some time. Be patient and run only when you're ready.</p>
+
+<div class="highlight highlight-bash"><pre>make render <span class="pl-c"># Render `.bmp` images to `out/`</span>
+make convert-render <span class="pl-c"># Convert `.bmp` to `.png` and move to `img/`</span></pre></div>
+
 <h2>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
@@ -290,7 +307,17 @@ Implementation Notes:</p>
 
     </section>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-57984473-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
 
