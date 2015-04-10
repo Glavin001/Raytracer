@@ -2,7 +2,7 @@
 
 > Raytracer for CSCI 4471 Computer Graphics class project
 
-See section `Documentation -> Features` below for a complete feature list.
+See section [`Documentation -> Features`](#Features) below for a complete feature list.
 
 ## Author
 
@@ -66,6 +66,25 @@ You can change the default arguments for `render` task.
 - `EXT` - Defaults to `bmp` (`bmp` or `tga` supported) - File extension of rendered images
 - `BOUNCES` - Defaults to `4` - # of recursive bounces of a ray, used for reflections
 - `SPECIALS` - Defaults to `on` (`on` or `off`) - Render special cases of the input files, such as with depth mapping
+
+#### Cleaning Rendered Images
+
+After running `make render` and populating your `out/` directory with images you may wish to clean / delete all of those images.
+
+```bash
+make clean-render
+```
+
+#### Rendering with a clean build
+
+By default, `make render` will only compile any new / changed files.
+To force a `make clean` before building the binary and running the `render` task you can use the `render-clean` task.
+
+```bash
+# Exactly like using just `render` task
+# Except it runs `clean` task before building
+make render-clean
+```
 
 ##### Examples
 
@@ -135,12 +154,26 @@ Here is the complete feature list.
 **Bolded** list items are require features. 
 Features marked with ✓ are implemented, while those without are not.
 
+**In addition to the 103 required marks there were 26 elective marks implemented, totalling to 129 marks out of the 125 marks for 100%**.
+
+Below is the complete list of features and details about each where applicable.
 
 #### Electives (22 required marks)
 
 > Your choice of additional features beyond the specific required ones.
 
+Implemented 26 elective marks:
+
+- Multiple light sources (4 marks)
+- Other debugging tools (2 marks)
+- Environment Mapping (5 marks)
+- Octree (6 marks)
+- Antialiasing (5 marks)
+- Source Control (4 marks)
+
 #### Starting Out (5 required marks)
+
+Implemented 5 out of 5 required marks.
 
 - [✓] **Basic classes, main function (5 marks)**
     - [✓] Material
@@ -151,6 +184,8 @@ Features marked with ✓ are implemented, while those without are not.
     	- See [Ray.h](src/Ray.h)
 
 #### Primitives and Modeling (29 required marks)
+
+Implemented 29 out of 29 required marks.
 
 - [✓] **Object3D (4 marks)**
 	- See [Object3D.h](src/Object3D.h)
@@ -181,6 +216,8 @@ Features marked with ✓ are implemented, while those without are not.
 
 
 #### Light Simulation and Illumination (36 required marks)
+
+Implemented 36 out of 36 required marks and 4 elective marks.
 
 - [✓] **Diffuse shading (5 marks)**
 	- See [Material.cpp](src/Material.cpp)
@@ -214,6 +251,8 @@ Features marked with ✓ are implemented, while those without are not.
 
 #### Camera and Lens Model (11 required marks)
 
+Implemented 11 out of 11 required marks.
+
 - [✓] **Camera (2 marks)**
 	- See [Camera.h](src/Camera.h)
 
@@ -235,6 +274,8 @@ Features marked with ✓ are implemented, while those without are not.
 
 #### Debugging Tools (12 required marks)
 
+Implemented 12 out of 12 required marks and 2 elective marks.
+
 - [✓] **Depth Visualization (4 marks)**
 	- See [main.cpp](src/main.cpp)
 
@@ -250,8 +291,11 @@ Features marked with ✓ are implemented, while those without are not.
 
  - [✓] I developed [RayCapture](https://github.com/Glavin001/RayCapture) for the purpose of assisting me with quicker debugging and generating sample input scenes.
  - [✓] I have used Unit Testing to help me with my debugging. You can run `make test` to see the results. This has helped me in the initial development of this Raytracer for testing Camera's generateRay return values in comparison to the right values calculated "by hand". See [test/unit/](test/unit/) directory for source code of the unit tests.
+ - [✓] I developed a `render.sh` script that allows me to pass arguments in to customize which input files are rendered and how they are rendered, size of image, number of ray bounces, etc. See `Rendering Arguments` section above for more details. 
 
 #### Textures (10 required marks)
+
+Implemented 10 out of 10 required marks and 5 elective marks.
 
 - [✓] **Simple Procedural (4 marks)**
 	- See [Noise.h](src/Noise.h) and [Noise.cpp](src/Noise.cpp) 
@@ -273,6 +317,8 @@ Features marked with ✓ are implemented, while those without are not.
 
 #### Acceleration Techniques (0 required marks)
 
+Implemented 6 elective marks.
+
 - [ ] Adaptive Ray Depth (5 marks)
 
 - [ ] Intersection Methods (4 marks)
@@ -291,6 +337,8 @@ Features marked with ✓ are implemented, while those without are not.
 
 #### Distributed Raytracing (0 required marks)
 
+Implemented 5 elective marks.
+
 - [✓] Antialiasing (5)
 	- [✓] Jittering method for antialiasing
 		- See [main.cpp](src/main.cpp)  
@@ -300,6 +348,8 @@ Features marked with ✓ are implemented, while those without are not.
 - [ ] Motion Blur (4 marks)
 
 #### Software Engineering (0 required marks)
+
+Implement 4 elective marks.
 
 - [✓] Source Code Control (4 marks)
 	- Using Git and GitHub!
