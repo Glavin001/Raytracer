@@ -8,6 +8,18 @@ See [`Features`](#features) section below for a complete feature list.
 
 - [Glavin Wiechert](https://github.com/Glavin001)
 
+
+## Downloads
+
+[Pre-Built Binary for Mac (188 KB)](https://github.com/Glavin001/Raytracer/releases/download/v1.0.0/raytracer.o) | [zip of `in/` directory (32.6 MB)](https://github.com/Glavin001/Raytracer/releases/download/v1.0.0/in.zip) | [zip of `out/` directory (4.22 MB)](https://github.com/Glavin001/Raytracer/releases/download/v1.0.0/out.zip) | [zip of `img/` directory (2.79 MB)](https://github.com/Glavin001/Raytracer/releases/download/v1.0.0/img.zip)
+--- | --- | --- | ---
+
+**Note:** Some of the required files are ignored by Git to keep the repository's size at a minimum. The complete `in/` directory can be downloaded and swapped in place after downloading this repository. This will allow you to test all of the files, including those with large `.obj` and texture files.
+
+The `out/` directory contains all of the rendered images as `.bmp`.
+The `img/` directory contains all of the images converted into `.png`.
+You may prefer to download the resulting images in `out/` and `img/`, and skip compiling and running the Raytracer entirely.
+
 ## Compiling
 
 Build the executable in `bin/` directory.
