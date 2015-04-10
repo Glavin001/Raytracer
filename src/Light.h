@@ -37,14 +37,15 @@ public:
     {
 
     }
-    ///@param p unsed in this function
-    ///@param distanceToLight not well defined because it's not a point light
+  ///@param p unsed in this function
+  ///@param distanceToLight not well defined because it's not a point light
     virtual void getIllumination( const Vector3f& p, Vector3f& dir, Vector3f& col, float& distanceToLight ) const
     {
         // the direction to the light is the opposite of the
         // direction of the directional light source
         dir = -direction;
         col = color;
+    	distanceToLight = FLT_MAX; 
     }
 
 private:
@@ -60,10 +61,11 @@ class PointLight : public Light
 {
 public:
 
-    PointLight( const Vector3f& p, const Vector3f& c )
+    PointLight( const Vector3f& p, const Vector3f& c,float fall )
     {
         position = p;
         color = c;
+      falloff = fall;
     }
 
     ~PointLight()
@@ -75,15 +77,16 @@ public:
     {
         // the direction to the light is the opposite of the
         // direction of the directional light source
-        dir = (position-p);
-        dir = dir/dir.abs();
-        col = color;
+		  dir = (position-p);
+      distanceToLight = dir.abs();
+		  dir = dir/dir.abs();
+      col = color/(1+falloff*distanceToLight*distanceToLight);
     }
 
 private:
 
     PointLight(); // don't use
-
+    float falloff;
     Vector3f position;
     Vector3f color;
 

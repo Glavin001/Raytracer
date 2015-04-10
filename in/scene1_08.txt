@@ -29,7 +29,7 @@ Group {
     numObjects 1
     MaterialIndex 0
     Triangle {
-        vertex0 -2 0.2 1
+        vertex0 -2 0.2 0.5
         vertex1 2 0.3 0
         vertex2 1 2 0
     }

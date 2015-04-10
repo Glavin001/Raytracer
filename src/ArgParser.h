@@ -50,13 +50,16 @@ public:
                 bounces = atoi(argv[i]);
             } else if (!strcmp(argv[i],"-shadows")) {
                 shadows = 1;
+            } else if (!strcmp(argv[i],"-shade_back")) {
+                shade_back = 1;
             }
 
             // supersampling
             else if (strcmp(argv[i],"-jitter")==0) {
-                jitter = 1;
+                i++; assert (i < argc);
+                jitter = (int) atoi(argv[i]);
             }else if(strcmp(argv[i],"-filter")==0) {
-                filter =1;
+                filter = 1;
             }
             else {
                 printf ("Unknown command line argument %d: '%s'\n",i,argv[i]);
@@ -80,6 +83,7 @@ public:
         depth_max = 1;
         bounces = 4;
         shadows = 0;
+        shade_back = 0;
 
         // sampling
         jitter = 0;
@@ -104,6 +108,7 @@ public:
     float depth_max;
     int bounces;
     int shadows;
+    int shade_back;
 
     // supersampling
     int jitter;

@@ -1,0 +1,96 @@
+OrthographicCamera {
+    center 10 11 10
+    direction -1 -1 -1
+    up 0 1 0
+    size 5
+}
+
+Background { color 0.1 0.1 0.1 }
+
+Materials {
+    numMaterials 8
+    PhongMaterial {
+        diffuseColor 0 0 1
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 0 1 0
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 0 1 1
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 1 0 0
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 1 0 1
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 1 1 0
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 1 1 1
+        reflectiveColor 0.9 0.9 0.9
+    }
+    PhongMaterial {
+        diffuseColor 0.5 0.5 0.5
+        reflectiveColor 0.9 0.9 0.9
+    }
+}
+
+Group {
+    numObjects 8
+    MaterialIndex 0
+    Triangle {
+        vertex0 0 0.707106781 0
+        vertex1 -0.5 0 0.5
+        vertex2 0.5 0 0.5
+    }
+    MaterialIndex 1
+    Triangle {
+        vertex0 0 0.707106781 0
+        vertex1 0.5 0 0.5
+        vertex2 0.5 0 -0.5
+    }
+    MaterialIndex 2
+    Triangle {
+        vertex0 0 0.707106781 0
+        vertex1 0.5 0 -0.5
+        vertex2 -0.5 0 -0.5
+    }
+    MaterialIndex 3
+    Triangle {
+        vertex0 0 0.707106781 0
+        vertex1 -0.5 0 -0.5
+        vertex2 -0.5 0 0.5
+    }
+    MaterialIndex 4
+    Triangle {
+        vertex0 0 -0.707106781 0
+        vertex1 0.5 0 0.5
+        vertex2 -0.5 0 0.5
+    }
+    MaterialIndex 5
+    Triangle {
+        vertex0 0 -0.707106781 0
+        vertex1 0.5 0 -0.5
+        vertex2 0.5 0 0.5
+    }
+    MaterialIndex 6
+    Triangle {
+        vertex0 0 -0.707106781 0
+        vertex1 -0.5 0 -0.5
+        vertex2 0.5 0 -0.5
+    }
+    MaterialIndex 7
+    Triangle {
+        vertex0 0 -0.707106781 0
+        vertex1 -0.5 0 0.5
+        vertex2 -0.5 0 -0.5
+    }
+}

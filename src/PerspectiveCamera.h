@@ -10,10 +10,12 @@ class PerspectiveCamera : public Camera
 public:
     PerspectiveCamera(const Vector3f& center, const Vector3f& direction, const Vector3f& up, float angle){
         this->center = center;
-        this->direction = direction.normalized();
-        this->up = up.normalized();
         this->angle = angle;
-        this->horizontal = Vector3f::cross(direction, up);
+
+        this->direction = direction.normalized(); // w
+        this->horizontal = Vector3f::cross(this->direction, up).normalized(); // v
+        this->up = Vector3f::cross(this->horizontal, this->direction); // u
+
     }
 
     /**
@@ -48,8 +50,8 @@ public:
         float right = hsize;
         float top = hsize;
         float bottom = -hsize;
-        float u = left+(right-left)*point.x();
-        float v = bottom+(top-bottom)*point.y();
+        float u = bottom+(top-bottom)*point.y();
+        float v = left+(right-left)*point.x();
 
         // direction = -d*vw+u*vu+v*vv
         // std::cout << "hsize: " << hsize << ", u: "<< u << ", v: " << v << ", d: " << d << endl;

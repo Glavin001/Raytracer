@@ -6,9 +6,10 @@
 
 #include "SceneParser.h"
 #include "Camera.h"
+#include "PerspectiveCamera.h"
+#include "OrthographicCamera.h"
 #include "Light.h"
 #include "Material.h"
-
 #include "Object3D.h"
 #include "Group.h"
 #include "Sphere.h"
@@ -30,21 +31,21 @@ SceneParser::SceneParser(const char* filename) {
     num_materials = 0;
     materials = NULL;
     current_material = NULL;
-
+	cubemap = 0;
     // parse the file
     assert(filename != NULL);
     const char *ext = &filename[strlen(filename)-4];
 
-    if(strcmp(ext,".txt")!=0) {
-        printf("wrong file name extension\n");
-        exit(0);
-    }
+    if(strcmp(ext,".txt")!=0){
+		printf("wrong file name extension\n");
+		exit(0);
+	}
     file = fopen(filename,"r");
 
-    if (file == NULL) {
-        printf("cannot open scene file\n");
-        exit(0);
-    }
+	if (file == NULL){
+		printf("cannot open scene file\n");
+		exit(0);
+	}
     parseFile();
     fclose(file);
     file = NULL;
@@ -64,12 +65,10 @@ SceneParser::~SceneParser() {
         delete camera;
     int i;
     for (i = 0; i < num_materials; i++) {
-        delete materials[i];
-    }
+        delete materials[i]; }
     delete [] materials;
     for (i = 0; i < num_lights; i++) {
-        delete lights[i];
-    }
+        delete lights[i]; }
     delete [] lights;
 }
 
@@ -134,7 +133,7 @@ void SceneParser::parseOrthographicCamera() {
     getToken(token); assert (!strcmp(token, "up"));
     Vector3f up = readVector3f();
     getToken(token); assert (!strcmp(token, "size"));
-    int size = readInt();
+    float size = readFloat();
     getToken(token); assert (!strcmp(token, "}"));
     camera = new OrthographicCamera(center,direction,up,size);
 }
@@ -151,13 +150,21 @@ void SceneParser::parseBackground() {
             background_color = readVector3f();
         } else if (!strcmp(token, "ambientLight")) {
             ambient_light = readVector3f();
-        } else {
+        } else if(strcmp(token,"cubeMap")==0){
+			cubemap = parseCubeMap();
+		}else {
             printf ("Unknown token in parseBackground: '%s'\n", token);
             assert(0);
         }
     }
 }
 
+CubeMap * SceneParser::parseCubeMap()
+{
+	char token[MAX_PARSER_TOKEN_LENGTH];
+	getToken(token);
+	return new CubeMap(token);
+}
 // ====================================================================
 // ====================================================================
 
@@ -175,10 +182,10 @@ void SceneParser::parseLights() {
         if (!strcmp(token, "DirectionalLight")) {
             lights[count] = parseDirectionalLight();
         } else if(strcmp(token, "PointLight")==0)
-        {
-            lights[count] = parsePointLight();
-        }
-        else {
+		{
+			lights[count] = parsePointLight();
+		}
+		else {
             printf ("Unknown token in parseLight: '%s'\n", token);
             exit(0);
         }
@@ -200,13 +207,29 @@ Light* SceneParser::parseDirectionalLight() {
 }
 Light* SceneParser::parsePointLight() {
     char token[MAX_PARSER_TOKEN_LENGTH];
+    Vector3f position,color;
+    float falloff = 0;
+    Vector3f attenuation;
     getToken(token); assert (!strcmp(token, "{"));
-    getToken(token); assert (!strcmp(token, "position"));
-    Vector3f position = readVector3f();
-    getToken(token); assert (!strcmp(token, "color"));
-    Vector3f color = readVector3f();
-    getToken(token); assert (!strcmp(token, "}"));
-    return new PointLight(position,color);
+    while (1) {
+        getToken(token);
+        if (strcmp(token, "position")==0) {
+            position = readVector3f();
+        }else if (strcmp(token, "color")==0) {
+          color = readVector3f();
+        }else if(strcmp(token,"falloff")==0){
+          falloff = readFloat();
+        }else if(strcmp(token,"attenuation")==0){
+            attenuation = readVector3f();
+            std::cout << "WARNING: `attenuation` is still not fully supported"
+                         " for Point Light." << endl;
+        }else{
+            // std::cout << "token: " << token << endl;
+           assert (!strcmp(token, "}"));
+          break;
+        }
+    }
+    return new PointLight(position,color,falloff);
 }
 // ====================================================================
 // ====================================================================
@@ -223,7 +246,7 @@ void SceneParser::parseMaterials() {
     while (num_materials > count) {
         getToken(token);
         if (!strcmp(token, "Material") ||
-            !strcmp(token, "PhongMaterial")) {
+                !strcmp(token, "PhongMaterial")) {
             materials[count] = parseMaterial();
         } else {
             printf ("Unknown token in parseMaterial: '%s'\n", token);
@@ -234,40 +257,113 @@ void SceneParser::parseMaterials() {
     getToken(token); assert (!strcmp(token, "}"));
 }
 
-
 Material* SceneParser::parseMaterial() {
     char token[MAX_PARSER_TOKEN_LENGTH];
-    char filename[MAX_PARSER_TOKEN_LENGTH];
-    filename[0] = 0;
+	char filename[MAX_PARSER_TOKEN_LENGTH];
+	filename[0] = 0;
     Vector3f diffuseColor(1,1,1), specularColor(0,0,0);
-    float shininess=0;
+	float shininess=0;
+	float refractionIndex =0;
     getToken(token); assert (!strcmp(token, "{"));
+	Noise *noise =0;
+    Vector3f reflectiveColor;
+    Vector3f transparentColor;
     while (1) {
         getToken(token);
         if (strcmp(token, "diffuseColor")==0) {
             diffuseColor = readVector3f();
         }
-        else if (strcmp(token, "specularColor")==0) {
+		else if (strcmp(token, "specularColor")==0) {
             specularColor = readVector3f();
         }
-        else if (strcmp(token, "shininess")==0) {
+		else if (strcmp(token, "shininess")==0) {
             shininess = readFloat();
         }
-        else if (strcmp(token, "texture")==0) {
+        else if (strcmp(token, "exponent")==0) {
+            shininess = readFloat();
+        }
+        else if(strcmp(token, "refractionIndex")==0){
+            refractionIndex = readFloat();
+        }
+        else if(strcmp(token, "indexOfRefraction")==0){
+			refractionIndex = readFloat();
+		}
+		else if (strcmp(token, "texture")==0) {
             getToken(filename);
         }
-        else {
+		///unimplemented
+		else if (strcmp(token, "bump")==0) {
+            getToken(token);
+        }
+		else if(strcmp(token,"Noise")==0){
+			noise = parseNoise();
+		}
+        else if(strcmp(token,"transparentColor")==0){
+            transparentColor = readVector3f();
+        }
+        else if(strcmp(token,"reflectiveColor")==0){
+            reflectiveColor = readVector3f();
+        }
+		else {
+            // std::cout << "Token: " << token << endl;
             assert (!strcmp(token, "}"));
             break;
         }
     }
-    Material *answer = new Material(diffuseColor, specularColor, shininess);
-    if(filename[0] !=0) {
-        answer->loadTexture(filename);
+    Material *answer = new Material(diffuseColor, specularColor, shininess,refractionIndex);
+	if(filename[0] !=0){
+		answer->loadTexture(filename);
+	}
+	if(noise != 0){
+		answer->setNoise(*noise);
+		delete noise;
+	}
+    if (reflectiveColor != Vector3f(0,0,0)) {
+        answer->setReflectiveColor(reflectiveColor);
+    }
+
+    if (transparentColor != Vector3f(0,0,0)) {
+        answer->setTransparentColor(transparentColor);
     }
     return answer;
 }
 
+Noise * SceneParser::parseNoise()
+{
+    char token[MAX_PARSER_TOKEN_LENGTH];
+	Vector3f color[2];
+	int colorIdx = 0;
+	int octaves=0;
+	float frequency  = 1;
+	float amplitude = 1;
+	getToken(token); assert (!strcmp(token, "{"));
+	Noise *noise =0;
+    while (1) {
+        getToken(token);
+        if (strcmp(token, "color")==0) {
+			if(colorIdx > 1){
+				printf("Error parsing noise\n");
+			}else{
+				color[colorIdx]= readVector3f();
+				colorIdx++;
+			}
+        }
+		else if (strcmp(token, "octaves")==0) {
+            octaves= readInt();
+        }
+		else if (strcmp(token, "frequency")==0) {
+            frequency= readFloat();
+        }
+		else if (strcmp(token, "amplitude")==0) {
+            amplitude= readFloat();
+        }
+		else {
+            assert (!strcmp(token, "}"));
+            break;
+        }
+    }
+	return new Noise(octaves, color[0],color[1],frequency,amplitude);
+}
 // ====================================================================
 // ====================================================================
 
@@ -434,10 +530,10 @@ Transform* SceneParser::parseTransform() {
             Matrix4f matrix2 = Matrix4f::identity();
             getToken(token); assert (!strcmp(token, "{"));
             for (int j = 0; j < 4; j++) {
-                for (int i = 0; i < 4; i++) {
-                    float v = readFloat();
-                    matrix2( i, j ) = v;
-                }
+	            for (int i = 0; i < 4; i++) {
+            	    float v = readFloat();
+	                matrix2( i, j ) = v;
+            	}
             }
             getToken(token); assert (!strcmp(token, "}"));
             matrix = matrix2 * matrix;

@@ -1,0 +1,34 @@
+
+PerspectiveCamera {
+    center 0 0 10
+    direction 0 0 -1
+    up 0 1 0
+    angle 90
+}
+
+
+Background { color 0 0 0 }
+
+Materials {
+    numMaterials 1
+    PhongMaterial {
+        diffuseColor 1 0 0
+    }
+}
+
+Group {
+    numObjects 2
+
+    MaterialIndex 0
+    Sphere {
+        center 0 0 0
+        radius 1
+    }
+
+    MaterialIndex 0
+    Plane {
+        normal 1 0 0
+        offset -2
+    }
+
+}

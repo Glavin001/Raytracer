@@ -5,11 +5,14 @@
 #include <cmath>
 #include <iostream>
 
+#include "RayTracer.h"
 #include "SceneParser.h"
 #include "Image.h"
 #include "Camera.h"
 #include <string.h>
 #include <map>
+#include <thread>
+#include <omp.h>
 
 using namespace std;
 
@@ -33,8 +36,13 @@ int main( int argc, char* argv[] )
                        "\t-version\t\toutput the version number\n"
                        "\t-input <file>\t\tinput file\n"
                        "\t-output <file>\t\toutput file\n"
+                       "\t-normals <file>\t\tnormal visualization file\n"
                        "\t-size <width> <height>\tsize of rendered image\n"
                        "\t-depth <depth_min> <depth_max> <depth_file>\tdepth\n"
+                       "\t-jitter <samples> \tantialiasing using jittering method\n"
+                       "\t-bounces <bounces> \tnumber of ray bounces off objects\n"
+                       "\t-shadows \tenable shadows\n"
+                       "\t-shade_back \tenable Back-Face Shading\n"
                        "\n"
                        "Examples:\n"
                        "\traytracer -input scene1_01.txt -size 200 200 -output output1_01.tga -depth 9 10 depth1_01.tga\n"
@@ -66,9 +74,17 @@ int main( int argc, char* argv[] )
     Camera *camera = (Camera *) scene.getCamera();
     Group *group = (Group *) scene.getGroup();
 
-    char *depthFile = args.depth_file;
+    RayTracer raytracer = RayTracer(&scene,
+                                    args.bounces,
+                                    (bool) args.shadows,
+                                    (bool) args.shade_back);
 
-    std::cout << "# of Objects in Group: " << (int) group->getGroupSize() << endl;
+    char *outputFile = args.output_file;
+    char *depthFile = args.depth_file;
+    char *normalsFile = args.normals_file;
+    int jitter = args.jitter;
+
+    //std::cout << "# of Objects in Group: " << (int) group->getGroupSize() << endl;
 
     // Then loop over each pixel in the image, shooting a ray
     // through that pixel and finding its intersection with
@@ -76,47 +92,101 @@ int main( int argc, char* argv[] )
     // pixel in your output image.
     Image image( args.width, args.height );
     Image depthImage ( args.width, args.height );
+    Image normalsImage ( args.width, args.height );
+
+    // unsigned int n = std::thread::hardware_concurrency();
+    // std::cout << n << " concurrent threads are supported.\n";
+
     float tmin = camera->getTMin();
-    for (int x = 0; x < args.width; x++)
+    int x, y = 0;
+
+    //#pragma omp parallel for private(y) shared(image, depthImage, normalsImage, camera, raytracer)
+    for (x = 0; x < args.width; x++)
     {
-        for (int y = 0; y < args.height; y++) {
+        // std::cout<<"Threads: "<<omp_get_num_threads() <<"."<<endl;
 
-            Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
-            Ray ray = camera->generateRay(point);
+        for (y = 0; y < args.height; y++) {
 
-            //std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
+            // std::cout << "p = ("<< x << ", " << y << ")" << endl;
 
-            Hit hit = Hit();
-            bool doesIntersect = group->intersect(ray, hit, tmin);
+            float t;
+            Vector3f pixelColor;
+            Vector3f normal;
+            if (jitter < 2) {
+                Vector2f point ( (x+0.5)/args.width, (y+0.5)/args.height );
+                Ray ray = camera->generateRay(point);
+                //std::cout << "(" << ray.getDirection()[0] << ", " << ray.getDirection()[1] << ", "<< ray.getDirection()[2] << ", " << ")" << endl;
+                Hit hit = Hit();
+                pixelColor = raytracer.traceRay(ray, tmin, 0, 1.0f, hit);
+                t = hit.getT();
+                normal = hit.getNormal();
+            } else {
+                // Antialiasing / Super-sampling
+                // Using Jittering method
+                int n = jitter; // To match the algorithm's notation
+                Vector3f c = Vector3f(0,0,0);
+                t = 0;
+                normal = Vector3f(0,0,0);
+                for (int p=0; p<n; p++) {
+                    for (int q=0; q<n; q++) {
 
-            if (doesIntersect) {
-                float t = hit.getT();
+                        // Unfiform random number in the range 0 to 1
+                        float e = ((double) rand() / (double) RAND_MAX);
+                        // Hybrid strategy that randomly perturbs a regular grid
+                        Vector2f point ( (x+((p+e)/n))/args.width, (y+((q+e)/n))/args.height );
+                        Ray ray = camera->generateRay(point);
 
-                // Ray Caster Image
-                Vector3f pixelColor (1.0f, 0, 0);
-                //width and height
-                image.SetPixel( x, y, pixelColor );
+                        Hit hit = Hit();
+                        // Accumulate colour, t, and normal values
+                        c += raytracer.traceRay(ray, tmin, 0, 1.0f, hit);
+                        t += hit.getT();
+                        normal += hit.getNormal();
 
-                if (depthFile != NULL) {
-                    // std::cout << "T before: " << t << endl;
-                    t -= args.depth_min;
-                    t *= 1/(args.depth_max - args.depth_min);
-                    t = 1 - t;
-                    // std::cout << "T after: " << t << endl;
-                    Vector3f depthPixelColor (t, t, t);
-                    depthImage.SetPixel(x, y, depthPixelColor);
-
+                    }
                 }
+                // Divide the accumulated sample values by the number of samples
+                float n2 = pow(n, 2); // # of samples
+                pixelColor = c / n2;
+                t = t / n2;
+                normal = normal / n2;
 
+            }
+
+            if (outputFile != NULL) {
+                // Ray Caster Image
+                image.SetPixel( x, y, pixelColor );
+            }
+
+            if (depthFile != NULL) {
+                // std::cout << "T before: " << t << endl;
+                t -= args.depth_min;
+                t *= 1/(args.depth_max - args.depth_min);
+                t = 1 - t;
+                // std::cout << "T after: " << t << endl;
+                Vector3f depthPixelColor (t, t, t);
+                depthImage.SetPixel(x, y, depthPixelColor);
+            }
+
+            if (normalsFile != NULL) {
+                normal = Vector3f (abs(normal.x()), abs(normal.y()), abs(normal.z()));
+                // std::cout << "Normal: (" << normal[0] << ", " << normal[1] << ", "<< normal[2] << ", " << ")" << endl;
+                normalsImage.SetPixel(x, y, normal);
             }
 
         }
     }
 
     // Save image to output file
-    image.SaveImage(args.output_file);
+    if (outputFile != NULL) {
+        image.SaveImage(outputFile);
+    }
+    // Depth file
     if (depthFile != NULL) {
         depthImage.SaveImage(depthFile);
+    }
+    // Normals file
+    if (normalsFile != NULL) {
+        normalsImage.SaveImage(normalsFile);
     }
 
     return 0;

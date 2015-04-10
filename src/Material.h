@@ -7,46 +7,46 @@
 #include "Ray.h"
 #include "Hit.h"
 #include "texture.hpp"
-///TODO:
-///Implement Shade function that uses ambient, diffuse, specular and texture
+#include "Noise.h"
 class Material
 {
 public:
 
-    Material( const Vector3f& d_color,const Vector3f& s_color=Vector3f::ZERO, float s=0) :
-        diffuseColor( d_color),specularColor(s_color), shininess(s)
-    {
+	Material( const Vector3f& d_color ,const Vector3f& s_color=Vector3f::ZERO, float s=0,
+		float r =0 );
 
-    }
+    virtual ~Material();
 
-    virtual ~Material()
-    {
-
-    }
-
-    virtual Vector3f getDiffuseColor() const
-    {
-        return diffuseColor;
-    }
-
+    virtual Vector3f getDiffuseColor() const ;
 
     Vector3f Shade( const Ray& ray, const Hit& hit,
-                    const Vector3f& dirToLight, const Vector3f& lightColor ) {
+            const Vector3f& dirToLight, const Vector3f& lightColor,
+			const bool shadeBack ) ;
 
-        return Vector3f(1,1,1);
+	static  Vector3f pointwiseDot( const Vector3f& v1 , const Vector3f& v2 );
 
-    }
+	float clampedDot( const Vector3f& L , const Vector3f& N )const;
+	void loadTexture(const char * filename);
+	float getRefractionIndex();
+	float getShininess();
+	Vector3f getDiffuseColor();
+	Vector3f getSpecularColor();
+	Vector3f getReflectiveColor();
+	Vector3f getTransparentColor();
 
-    void loadTexture(const char * filename){
-        t.load(filename);
-    }
+	void setNoise(const Noise & n);
+	void setReflectiveColor(const Vector3f& c);
+	void setTransparentColor(const Vector3f& c);
+
 protected:
-    Vector3f diffuseColor;
-    Vector3f specularColor;
-    float shininess;
-    Texture t;
+  Vector3f diffuseColor;
+  float refractionIndex;
+  float shininess;
+  Vector3f specularColor;
+  Vector3f reflectiveColor;
+  Vector3f transparentColor;
+  Texture t;
+  Noise noise;
 };
-
-
 
 #endif // MATERIAL_H
