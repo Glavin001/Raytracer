@@ -126,7 +126,7 @@ Vector3f RayTracer::traceRay( Ray& ray, float tmin, int bounces,
             Vector3f dirFromMirror = mirrorDirection(normal, rayDir);
 
             // If point is on a dieletric
-            if (rnt > 0.0)
+            if (rnt > 0.0 && material->getTransparentColor() != Vector3f(0,0,0))
             {
                 // std::cout << "=== Dielectric ===" <<endl;
                 // std::cout << "rn:  " << rn <<endl;
