@@ -95,6 +95,27 @@ You can also disable the special custom rendered images:
 make render SPECIAL=off
 ```
 
+### Convert `.bmp` to `.png` images
+
+First, install `imagemagick`:
+
+```bash
+brew install imagemagick
+```
+
+The following will convert the `.bmp` images to `.png` images and move them into the `img/` directory.
+
+```bash
+make convert-render
+```
+
+You should run this after you're satisfied with your `.bmp` renders.
+It will render all of the `.bmp` images it can find in `out/`, and will take some time. Be patient and run only when you're ready.
+
+```bash
+make render # Render `.bmp` images to `out/`
+make convert-render # Convert `.bmp` to `.png` and move to `img/`
+```
 
 ## Documentation
 
