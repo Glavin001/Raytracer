@@ -33,11 +33,13 @@
 # === Project Specific ===
 *.bmp
 *.tga
+*.png
 docs/
 
 
 # === Remove large .obj inputs ===
 in/*.obj
+
 
 # === Keep small .obj inputs ===
 !in/bunny_1k.obj

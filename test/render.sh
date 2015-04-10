@@ -120,7 +120,14 @@ else
     ${BIN} -input scene4_06_transparent_bars.txt ${args} -output ${OUT_DIR}scene4_06_transparent_bars-bounces_4.${EXT} -bounces 4 -shade_back -shadows
     ${BIN} -input scene4_06_transparent_bars.txt ${args} -output ${OUT_DIR}scene4_06_transparent_bars-bounces_5.${EXT} -bounces 5 -shade_back -shadows
 
+    echo
+    echo "=== Render input files with Antialiasing enabled ==="
+    ${BIN} -input scene_reflective_shininess_variations.txt ${args} -jitter 2 -output ${OUT_DIR}scene_reflective_shininess_variations-jitter_2.${EXT} -shade_back -shadows
+    ${BIN} -input scene_reflective_shininess_variations.txt ${args} -jitter 4 -output ${OUT_DIR}scene_reflective_shininess_variations-jitter_4.${EXT} -shade_back -shadows
+
     # High Res Examples
+    # echo
+    # echo "=== Render input files as high res ==="
     # ${BIN} -input scene_reflective_sphere.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_sphere.${EXT}
     # ${BIN} -input scene_reflective_shininess_variations.txt -size 1000 1000 -output ${OUT_DIR}scene_reflective_shininess_variations.${EXT}
 

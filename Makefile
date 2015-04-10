@@ -59,6 +59,9 @@ run: $(PROG)
 render: $(PROG)
 	${TESTDIR}render.sh
 
+convert-render:
+	cd out/ && mogrify -format png *.bmp && mv *.png ../img/ && cd ../
+
 clean-render: clean render
 
 docs: FORCE

@@ -56,9 +56,10 @@ public:
 
             // supersampling
             else if (strcmp(argv[i],"-jitter")==0) {
-                jitter = 1;
+                i++; assert (i < argc);
+                jitter = (int) atoi(argv[i]);
             }else if(strcmp(argv[i],"-filter")==0) {
-                filter =1;
+                filter = 1;
             }
             else {
                 printf ("Unknown command line argument %d: '%s'\n",i,argv[i]);
