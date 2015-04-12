@@ -1,5 +1,6 @@
 
-CC = g++-4.9
+#CC = g++-4.9
+CC = g++
 
 SRCDIR = src/
 OUTDIR = out/
@@ -17,7 +18,8 @@ TESTOBJS = $(TESTS:.cpp=.o)
 PROGNAME = raytracer.o
 PROG = ${BUILDDIR}${PROGNAME}
 TESTPROG = ${BUILDDIR}test.o
-CFLAGS = -O2 -Wall -Wextra -std=c++11 -m64 -fopenmp
+#CFLAGS = -O2 -Wall -Wextra -std=c++11 -m64 -fopenmp
+CFLAGS = -O2 -Wall -Wextra -std=c++11 -m64
 INCFLAGS = -I${SRCDIR}vecmath/include
 
 all: $(PROG)

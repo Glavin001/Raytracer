@@ -12,7 +12,7 @@
 #include <string.h>
 #include <map>
 #include <thread>
-#include <omp.h>
+//#include <omp.h>
 
 using namespace std;
 
